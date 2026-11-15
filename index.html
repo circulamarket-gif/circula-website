@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#22c6a3">
+  <meta name="description" content="CIRCULA Market conecta personas, negocios y servicios en Colombia.">
+  <title>CIRCULA Market</title>
+  <link rel="icon" href="assets/circula_logo.jpg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles-bright.css">
+  <link rel="stylesheet" href="homepage.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#inicio" data-page="inicio" aria-label="CIRCULA Market, inicio">
+      <img src="assets/circula_logo.jpg" alt="" width="42" height="42">
+      <span>CIRCULA <small>MARKET</small></span>
+    </a>
+    <button class="menu-toggle" id="menu-toggle" aria-label="Abrir menú" aria-expanded="false">☰</button>
+    <nav id="main-nav" aria-label="Navegación principal">
+      <button type="button" data-page="inicio" class="page-link active">Inicio</button>
+      <button type="button" data-page="nosotros" class="page-link">Nosotros</button>
+      <button type="button" data-page="servicios" class="page-link">Servicios</button>
+      <button type="button" data-page="restaurantes" class="page-link">Restaurantes</button>
+      <button type="button" data-page="tiendas" class="page-link">Tiendas</button>
+      <button type="button" data-page="descargas" class="page-link">Descargas</button>
+      <button type="button" class="page-link" id="mi-suscripcion-nav" hidden data-open-request="mi_suscripcion">📅 Mi suscripción</button>
+      <button class="nav-account" data-view="cuenta">Entrar / Registrarme</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio" data-page-section="inicio">
+      <div class="hero-copy">
+        <span class="eyebrow">UN MERCADO QUE NOS CONECTA</span>
+        <h1>Lo que buscas.<br><em>Lo que ofreces.</em><br>Todo circula.</h1>
+        <p>Encuentra productos, servicios, restaurantes y oportunidades cerca de ti. CIRCULA conecta a compradores y vendedores con acompañamiento humano y digital.</p>
+        <div class="hero-actions"><a class="button primary" href="#explorar">Explorar CIRCULA <span>→</span></a><button class="button soft" data-view="asistente">Hablar con el asistente</button><button class="button account-glow" data-view="cuenta" data-auth-mode="register">Crear mi cuenta</button></div>
+      </div>
+      <div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="hero-mark"><img src="assets/circula_logo_mark.png" alt=""></div><div class="float-card card-buy">🛍️ <span>Comprar</span></div><div class="float-card card-sell">🌿 <span>Reutilizar</span></div><div class="float-card card-services">🤝 <span>Conectar</span></div></div>
+    </section>
+
+    <section class="section about-page" id="nosotros" data-page-section="nosotros" hidden>
+      <div class="section-heading"><div><span class="eyebrow">QUIÉNES SOMOS</span><h2>En CIRCULA, las oportunidades se encuentran</h2></div></div>
+      <div class="about-grid"><article><span class="about-icon">↻</span><h3>Conectamos</h3><p>CIRCULA ayuda a personas, emprendimientos y negocios a encontrarse para comprar, vender, intercambiar y ofrecer servicios en Colombia.</p></article><article><span class="about-icon">🤝</span><h3>Acompañamos</h3><p>El bot y el asistente virtual orientan cada paso. Cuando hace falta, el equipo humano puede continuar la conversación.</p></article><article><span class="about-icon">🌱</span><h3>Hacemos circular</h3><p>Queremos que productos, talentos, espacios y servicios tengan más oportunidades de llegar a quien los necesita.</p></article></div>
+      <div class="about-assistant"><div><span class="eyebrow">¿QUIERES CONOCERNOS MEJOR?</span><h3>Chatea con el asistente de CIRCULA</h3><p>Cuéntanos qué buscas y te ayudaremos a encontrar el siguiente paso.</p></div><button class="button primary" data-view="asistente">Chatear con nosotros →</button></div>
+    </section>
+
+    <section class="downloads-page" id="descargas" data-page-section="descargas" hidden>
+      <div class="download-hero"><div class="download-copy"><span class="eyebrow">CIRCULA CONTIGO</span><h1>Todo lo que circula,<br><em>en tu celular.</em></h1><p>Descarga la aplicación oficial de CIRCULA Market para explorar productos, restaurantes, servicios y oportunidades desde tu teléfono.</p><div class="download-actions"><a class="button primary download-cta" href="#descargas" aria-disabled="true">APK disponible próximamente</a><span class="download-platform">Android · Archivo APK oficial</span></div><p class="download-status" id="download-status" role="status">Estamos preparando el enlace oficial de descarga.</p></div>
+        <div class="phone-preview" aria-label="Vista ilustrativa de CIRCULA en un celular"><div class="phone-frame"><div class="phone-camera"></div><div class="phone-screen"><div class="phone-top"><img src="assets/circula_logo.jpg" alt=""><span><b>CIRCULA</b><small>MARKET</small></span><span class="phone-user">●</span></div><div class="phone-welcome"><small>TODO CIRCULA</small><strong>¿Qué buscas hoy?</strong><span>Encuentra oportunidades cerca de ti.</span></div><div class="phone-categories"><span>🛍️<small>Productos</small></span><span>🍽️<small>Restaurantes</small></span><span>✨<small>Servicios</small></span><span>🏡<small>Inmuebles</small></span></div><div class="phone-feature"><small>DESTACADO</small><b>Descubre CIRCULA</b><span>Personas y negocios conectados</span></div><div class="phone-nav"><span>⌂</span><span>♡</span><span>＋</span><span>☰</span></div></div></div><span class="phone-orbit phone-orbit-one"></span><span class="phone-orbit phone-orbit-two"></span></div></div>
+      <div class="download-details"><article class="download-card download-android"><span class="download-icon">🤖</span><div><span class="eyebrow">ANDROID</span><h2>Descarga directa</h2><p>Cuando publiquemos el APK, podrás descargarlo desde aquí usando el enlace oficial de CIRCULA.</p><span class="release-badge" id="release-version">Próximamente</span></div><a class="button soft download-cta" href="#descargas" aria-disabled="true">Aún no disponible</a></article><article class="download-card"><span class="download-icon">🍎</span><div><span class="eyebrow">IPHONE Y IPAD</span><h2>Versión para iOS</h2><p>La descarga para iPhone se anunciará cuando la app esté disponible en la tienda correspondiente.</p><span class="release-badge">Próximamente</span></div></article></div>
+      <div class="download-help"><div><span class="eyebrow">INSTALACIÓN SEGURA</span><h2>Descárgala desde CIRCULA</h2><p>Cuando se habilite el APK, publicaremos aquí la versión oficial y los pasos para instalarla. Usa siempre el enlace de esta página para verificar que descargas el archivo correcto.</p></div><button type="button" class="button primary" data-view="asistente">¿Tienes dudas? Escríbenos →</button></div>
+    </section>
+
+    <section class="marketplace-home" id="vitrina" data-page-section="inicio">
+      <div class="section-heading market-heading">
+        <div><span class="eyebrow">NOVEDADES DE LA COMUNIDAD</span><h2>Lo que circula hoy</h2></div>
+        <p>Productos, inmuebles y servicios compartidos por usuarios de CIRCULA.</p>
+      </div>
+      <section class="vip-showcase" aria-label="Vitrina VIP CIRCULA">
+        <div class="vip-heading"><span class="vip-star">✦</span><div><span class="eyebrow">VITRINA VIP</span><h3>Publicaciones con prioridad</h3></div><span class="vip-note">Prioridad según plan activo</span></div>
+        <div id="vip-feature" class="vip-feature" aria-live="polite"><div class="vip-placeholder">✦</div><div class="vip-copy"><span class="demo-badge">MUESTRA</span><h4>Cargando publicaciones destacadas…</h4><p>Las publicaciones aprobadas aparecerán aquí.</p></div></div>
+        <div class="carousel-controls"><button type="button" id="vip-prev" aria-label="Publicación VIP anterior">←</button><span id="vip-count">0 / 0</span><button type="button" id="vip-next" aria-label="Siguiente publicación VIP">→</button></div>
+      </section>
+      <div class="market-subheading"><div><span class="eyebrow">EN MOVIMIENTO</span><h3>Más de CIRCULA</h3></div><div class="carousel-controls"><button type="button" id="market-prev" aria-label="Publicaciones anteriores">←</button><span id="market-count">0 / 0</span><button type="button" id="market-next" aria-label="Siguientes publicaciones">→</button></div></div>
+      <div id="market-grid" class="market-grid" aria-live="polite"></div>
+      <p id="market-status" class="market-status">Cargando publicaciones…</p>
+      <div class="market-admin-entry"><button type="button" id="admin-curate" class="button soft" hidden>Administrar publicaciones de portada</button><span id="demo-note" class="demo-note" hidden>Ejemplos demostrativos · no son publicaciones reales</span></div>
+      <section id="admin-curation-panel" class="admin-curation-panel" hidden>
+        <div class="admin-panel-heading"><div><span class="eyebrow">SOLO PERSONAL AUTORIZADO</span><h3>Alimentar la portada</h3></div><button type="button" id="admin-close" class="text-button">Cerrar ×</button></div>
+        <p>Selecciona anuncios aprobados por el equipo. La imagen se toma de la publicación del usuario en el almacenamiento compartido; no se sube una copia a la web. La prioridad VIP se calcula con el plan y su estado de pago.</p>
+        <div id="admin-listings" class="admin-listings"><p class="empty-state">Carga las publicaciones disponibles.</p></div><p id="admin-status" class="market-status" role="status"></p>
+      </section>
+    </section>
+
+    <section class="plans-section" id="planes" data-page-section="inicio">
+      <div class="plans-banner"><div><span class="eyebrow">MÁS VISIBILIDAD PARA LO QUE OFRECES</span><h2>Elige cómo quieres circular</h2><p>Compara los planes CIRCULA. Las publicaciones destacadas de la portada priorizan las cuentas con suscripción activa.</p></div><span class="plans-glow" aria-hidden="true">✦</span></div>
+      <div class="plans-grid">
+        <article class="plan-card"><span class="plan-label">PARA EMPEZAR</span><h3>Gratis</h3><p class="plan-price">$0 <small>COP / mes</small></p><p class="plan-commission">Comisión comercial: <b>18%</b></p><ul><li>Beneficios básicos</li><li>Hasta 1 inmueble publicado al tiempo</li></ul><a class="plan-pay" href="https://t.me/CIRCULAMarketbot" target="_blank" rel="noopener noreferrer"><span>Conocer el plan</span><b>Bot oficial de CIRCULA →</b></a></article>
+        <article class="plan-card"><span class="plan-label">MÁS ALCANCE</span><h3>Inicial</h3><p class="plan-price">$10.000 <small>COP / mes</small></p><p class="plan-commission">Comisión comercial: <b>14%</b></p><ul><li>1 publicación destacada por semana en Telegram y WhatsApp</li><li>Hasta 2 inmuebles publicados al tiempo</li></ul><div class="plan-payment-actions"><button type="button" class="plan-pay" data-pay-plan="Inicial" data-provider="Nequi">Nequi <span>→</span></button><button type="button" class="plan-pay" data-pay-plan="Inicial" data-provider="Daviplata">Daviplata <span>→</span></button></div></article>
+        <article class="plan-card plan-card-medium"><span class="plan-label">MÁS PRIORIDAD</span><h3>Medio</h3><p class="plan-price">$20.000 <small>COP / mes</small></p><p class="plan-commission">Comisión comercial: <b>10%</b></p><ul><li>Mejores beneficios de difusión y prioridad</li><li>Hasta 5 inmuebles publicados al tiempo</li></ul><div class="plan-payment-actions"><button type="button" class="plan-pay" data-pay-plan="Medio" data-provider="Nequi">Nequi <span>→</span></button><button type="button" class="plan-pay" data-pay-plan="Medio" data-provider="Daviplata">Daviplata <span>→</span></button></div></article>
+        <article class="plan-card plan-card-premium"><span class="plan-label">VITRINA VIP</span><h3>Premium <span class="crown">✦</span></h3><p class="plan-price">$30.000 <small>COP / mes</small></p><p class="plan-commission">Comisión comercial: <b>5%</b></p><ul><li>3 publicaciones por semana</li><li>Catálogo en Telegram y WhatsApp</li><li>Redes sociales CIRCULA y acceso a trueques</li><li>Hasta 10 inmuebles publicados al tiempo</li></ul><div class="plan-payment-actions"><button type="button" class="plan-pay" data-pay-plan="Premium" data-provider="Nequi">Nequi <span>→</span></button><button type="button" class="plan-pay" data-pay-plan="Premium" data-provider="Daviplata">Daviplata <span>→</span></button></div></article>
+      </div>
+      <p class="payment-note">Los pagos se gestionan por los medios oficiales de CIRCULA. En el bot podrás elegir Nequi o Daviplata y recibir el QR correspondiente al plan. Nunca compartas claves ni códigos de seguridad.</p>
+    </section>
+
+    <section class="section" id="explorar" data-page-section="servicios" hidden>
+      <div class="section-heading"><div><span class="eyebrow">¿QUÉ NECESITAS HOY?</span><h2>Encuentra tu camino</h2></div><p>Elige una opción para empezar. El equipo de CIRCULA puede acompañarte durante el proceso.</p></div>
+      <div class="category-grid" aria-label="Categorías de CIRCULA">
+        <article class="category-card"><span class="category-icon">🛍️</span><strong>Compra y venta</strong><small>Comprar, vender o hacer ambas cosas.</small><button type="button" class="text-button" data-open-request="compra_venta_menu">Ver opciones →</button></article>
+        <article class="category-card"><span class="category-icon">🔄</span><strong>Trueques / Permutas</strong><small>Intercambia productos o bienes.</small><button type="button" class="text-button" data-open-request="trueque">Iniciar solicitud →</button></article>
+        <article class="category-card"><span class="category-icon">🍔</span><strong>Restaurantes</strong><small>Busca restaurantes o registra el tuyo.</small><button type="button" class="text-button" data-open-request="restaurantes">Ver opciones →</button></article>
+        <article class="category-card"><span class="category-icon">🏪</span><strong>Tiendas y Panaderías</strong><small>Explora comercios y solicita vincular el tuyo.</small><button type="button" class="text-button" data-open-request="tiendas">Ver opciones →</button></article>
+        <article class="category-card"><span class="category-icon">🛠️</span><strong>Servicios</strong><small>Ofrece o busca servicios presenciales y virtuales.</small><button type="button" class="text-button" data-open-request="servicios">Iniciar solicitud →</button></article>
+        <article class="category-card"><span class="category-icon">🏠</span><strong>Inmuebles</strong><small>Busca o publica para venta y arriendo.</small><button type="button" class="text-button" data-open-request="inmuebles">Ver opciones →</button></article>
+        <article class="category-card"><span class="category-icon">💼</span><strong>Empleo</strong><small>Busca trabajo o encuentra trabajadores.</small><button type="button" class="text-button" data-open-request="empleo_menu">Ver opciones →</button></article>
+        <article class="category-card"><span class="category-icon">🚀</span><strong>Emprendedor / empresa</strong><small>Busca clientes o registra tu oferta empresarial.</small><button type="button" class="text-button" data-open-request="empresa">Ver opciones →</button></article>
+        <article class="category-card"><span class="category-icon">💡</span><strong>Otra necesidad / asesor</strong><small>Cuéntanos qué necesitas y lo registramos.</small><button type="button" class="text-button" data-open-request="otra">Iniciar solicitud →</button></article>
+      </div>
+      <div class="account-invite">
+        <div class="invite-symbol">✦</div>
+        <div><span class="eyebrow">TU ESPACIO EN CIRCULA</span><h3>Regístrate o entra a tu cuenta</h3><p>Tu perfil, tus solicitudes y tu estado de verificación estarán vinculados a tu cuenta CIRCULA.</p></div>
+        <div class="invite-actions"><button class="button primary" data-view="cuenta" data-auth-mode="register">Crear cuenta</button><button class="button invite-login" data-view="cuenta" data-auth-mode="login">Iniciar sesión</button></div>
+      </div>
+    </section>
+
+    <section class="restaurant-section" id="tiendas" data-page-section="tiendas" hidden>
+      <div class="restaurant-owner-banner"><div><span class="eyebrow">CIRCULA TIENDAS Y PANADERÍAS</span><h2>Productos esenciales cerca de ti</h2><p>Busca por ciudad, tipo de negocio y zona. Los productos solo aparecen después de ser aprobados; el pago se realiza directamente a la tienda.</p></div><button class="button white" id="store-owner-start">Registrar mi tienda desde el chat →</button></div>
+      <div class="store-search">
+        <label>Municipio o ciudad<input id="store-city" type="search" autocomplete="address-level2" placeholder="Busca y elige un municipio"></label>
+        <label>Tipo de negocio<input id="store-type" type="search" placeholder="Ej. panadería"></label>
+        <label>Barrio o zona<input id="store-zone" type="search" placeholder="Opcional"></label>
+        <button class="button primary" id="store-search-button">Buscar productos</button>
+      </div>
+      <p id="store-location-status" class="location-status" role="status">Cargando el listado de municipios colombianos…</p>
+      <div id="store-results" class="restaurant-grid" aria-live="polite"></div>
+      <div class="store-plans">
+        <h3>Suscripción mensual para comercios · sin comisión por venta</h3>
+        <p>Hasta 50 productos: <strong>$50.000 COP/mes</strong> · Hasta 299 productos: <strong>$100.000 COP/mes</strong> · 300 o más: <strong>$200.000 COP/mes</strong>.</p>
+        <p>El registro de cada tienda lo aprueba un administrador. Los productos aprobados son visibles en el catálogo; los casos dudosos pasan a revisión administrativa.</p>
+      </div>
+    </section>
+
+    <section class="restaurant-section" id="restaurantes" data-page-section="restaurantes" hidden>
+      <div class="restaurant-owner-banner"><div><span class="eyebrow">PARA RESTAURANTES</span><h2>¿Tienes un restaurante?</h2><p>¿Qué esperas para vincularlo a CIRCULA? Presenta tu negocio y crea un menú para que más personas te encuentren.</p></div><button class="button white" id="restaurant-owner-start">Registrar mi restaurante →</button></div>
+      <form id="restaurant-register-form" class="category-request-form restaurant-register-form" hidden>
+        <div class="section-heading"><div><span class="eyebrow">REGISTRO DIRECTO · WEB</span><h3>Vincula tu restaurante</h3></div><button type="button" class="text-button" id="restaurant-register-close">Cerrar ×</button></div>
+        <label>Nombre del restaurante<input name="nombre" maxlength="120" required></label>
+        <label>Descripción<textarea name="descripcion" maxlength="1200" rows="3"></textarea></label>
+        <label>Municipio<input id="restaurant-register-city" name="municipio" list="colombia-municipalities" placeholder="Elige tu municipio" required></label>
+        <label>Tipo de comida<select name="categoria_slug" id="restaurant-register-category" required></select></label>
+        <label>Barrio o zona<input name="zona" maxlength="160"></label>
+        <label>Horario<input name="horario" maxlength="240"></label>
+        <label>Entrega<select name="modalidad_entrega" required><option value="">Elige una opción</option><option>Domicilio propio</option><option>Recoger en el restaurante</option><option>Por definir</option></select></label>
+        <label>Logo o imagen del restaurante<input name="logo" type="file" accept="image/jpeg,image/png,image/webp" required></label>
+        <label>Documento del negocio<input name="documento" type="file" accept="application/pdf,image/jpeg,image/png" required></label>
+        <label>Tipo de documento<select name="documento_tipo" required><option value="">Elige el documento</option><option>RUT</option><option>Cámara de Comercio</option></select></label>
+        <button class="button primary" type="submit">Enviar registro</button><p id="restaurant-register-status" class="status-note" role="status"></p>
+      </form>
+      <div class="restaurant-plan-banner"><div><span class="eyebrow">CRECE CON CIRCULA</span><h3>Haz que tu restaurante llegue más lejos</h3><p>Inicial incluye una publicación destacada semanal en Telegram y WhatsApp; Medio mejora la difusión y prioridad; Premium ofrece 3 publicaciones por semana, catálogo en Telegram y WhatsApp, promoción en redes CIRCULA y acceso a trueques. Los cupos vigentes son 2, 5 y 10 inmuebles para Inicial, Medio y Premium.</p></div><button class="button primary" data-page="inicio" data-scroll-target="planes">Ver planes y beneficios →</button></div>
+      <div class="section-heading restaurant-heading"><div><span class="eyebrow">PARA QUIENES QUIEREN DISFRUTAR</span><h2>Encuentra tu próximo restaurante</h2></div><p>Busca por ciudad, centro poblado o tipo de comida.</p></div>
+      <p class="section-intro">Busca por municipio o ciudad de Colombia. El listado oficial DIVIPOLA identifica cada municipio junto con su departamento.</p>
+      <div class="restaurant-search"><label class="sr-only" for="catalog-city">Municipio o ciudad</label><input id="catalog-city" placeholder="Busca un municipio o ciudad" autocomplete="address-level2"><label class="sr-only" for="catalog-zone">Barrio o sector</label><input id="catalog-zone" placeholder="Barrio o sector (opcional)"><label for="catalog-type">Tipo de restaurante<select id="catalog-type" disabled><option value="">Cargando tipos de restaurante…</option></select></label><button id="catalog-search" class="button primary">Buscar restaurantes</button></div>
+      <p id="location-status" class="location-status" aria-live="polite">Cargando el listado de municipios colombianos…</p>
+      <div class="restaurant-registration-hint"><span>¿Tu municipio, corregimiento o centro poblado no aparece?</span><button type="button" class="text-button" id="location-request">Pedir que lo agreguemos →</button></div>
+      <div id="catalog-results" class="restaurant-grid"></div>
+      <p class="status-note restaurant-disclaimer">En esta etapa puedes explorar perfiles y menús publicados. Los pedidos y pagos dentro de CIRCULA todavía requieren integración adicional. El bot permite a cada restaurante administrar categorías, productos, fotos, precios y descripciones; usa el asistente para iniciar la vinculación.</p>
+    </section>
+
+    <section class="assistant-band" id="asistente" data-page-section="nosotros" hidden>
+      <div class="assistant-orb">✦</div><div><span class="eyebrow">SIEMPRE HAY UNA FORMA DE EMPEZAR</span><h2>¿Tienes una pregunta?</h2><p>El asistente de CIRCULA puede orientarte y ayudarte a encontrar el siguiente paso.</p></div><button class="button white" data-view="asistente">Conversar ahora <span>→</span></button>
+    </section>
+
+    <section class="panel section" id="app-view" hidden>
+      <div class="view-header"><button id="back-home" class="back-button">← Inicio</button><span class="eyebrow" id="view-eyebrow">CIRCULA MARKET</span></div>
+      <div id="menu-view" hidden></div>
+      <div id="assistant-view" hidden>
+        <h2>Asistente CIRCULA</h2><p class="section-intro">Conversa con el asistente para conocer opciones y resolver tus dudas.</p>
+        <div id="chat-messages" class="chat-box" aria-live="polite"></div>
+        <form id="chat-form" class="chat-compose"><label class="sr-only" for="chat-text">Tu mensaje o pie de foto</label><textarea id="chat-text" maxlength="1200" rows="2" placeholder="Escribe un mensaje o el pie de foto antes de adjuntar una imagen" required></textarea><label class="button soft chat-attach" for="chat-file" title="Adjuntar foto, video o documento">📎<span class="sr-only">Adjuntar archivo</span></label><input id="chat-file" type="file" accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx" hidden><button class="button primary" type="submit">Enviar ↑</button></form>
+        <p id="chat-status" class="status-note" role="status"></p>
+      </div>
+      <div id="account-view" hidden>
+        <h2>Mi cuenta CIRCULA</h2><p class="section-intro">Inicia sesión o solicita vincular tu cuenta existente. La verificación de identidad la revisa el equipo.</p>
+        <div class="account-tabs"><button class="selected" data-auth-tab="login">Iniciar sesión</button><button data-auth-tab="register">Crear cuenta</button><button data-auth-tab="link">Ya tengo código</button></div>
+        <form id="login-form" class="account-form"><label>Código CIRCULA<input name="codigo" autocomplete="username" placeholder="CIRC-00001" pattern="CIRC-[0-9]{4,}" required></label><label>Contraseña<input name="contrasena" type="password" autocomplete="current-password" required></label><button class="button primary" type="submit">Entrar</button></form>
+        <form id="signup-form" class="account-form" hidden>
+          <div class="form-intro"><strong>Crear una cuenta nueva</strong><span>Al completar los datos y enviar los documentos, tu registro quedará pendiente de revisión, igual que en el bot.</span></div>
+          <input type="hidden" name="terminos_version" value="">
+          <label>Nombre completo<input name="nombre" autocomplete="name" minlength="3" maxlength="120" required></label>
+          <label>Correo electrónico<input name="correo" type="email" autocomplete="email" maxlength="254" required></label>
+          <label>Celular / WhatsApp<input name="telefono" type="tel" autocomplete="tel" minlength="7" maxlength="24" required></label>
+          <label>Municipio o ciudad de residencia<input name="municipio" autocomplete="address-level2" placeholder="Busca y elige tu municipio" required></label>
+          <input type="hidden" name="codigo_municipio">
+          <small id="signup-location-status" class="location-status" role="status">Cargando el listado oficial de municipios…</small>
+          <label>Fecha de nacimiento<input name="fecha_nacimiento" type="date" autocomplete="bday" required><small>Debe coincidir con la fecha que aparece en tu documento.</small></label>
+          <label>Contraseña<input name="contrasena" type="password" minlength="12" autocomplete="new-password" required><small>Mínimo 12 caracteres.</small></label>
+          <label>Repite la contraseña<input name="confirmacion" type="password" minlength="12" autocomplete="new-password" required></label>
+          <label class="check-row"><input name="confirma_mayoria_edad" type="checkbox" required><span>Confirmo que soy mayor de 18 años.</span></label>
+          <details class="terms-summary"><summary>Leer los términos vigentes de CIRCULA</summary><p id="signup-terms-text">Al abrir esta opción, se consultará la versión oficial del servidor de CIRCULA.</p></details>
+          <label class="check-row"><input name="acepta_terminos" type="checkbox" required><span>Acepto los términos de CIRCULA.</span></label>
+          <label class="check-row"><input name="autoriza_datos" type="checkbox" required><span>Autorizo el tratamiento de mis datos para gestionar mi cuenta y verificar mi identidad.</span></label>
+          <label>Documento de identidad · cara frontal<input name="documento_frontal" type="file" accept="image/jpeg,image/png" required></label>
+          <label>Documento de identidad · cara posterior<input name="documento_posterior" type="file" accept="image/jpeg,image/png" required></label>
+          <p class="status-note">Sube imágenes JPG o PNG, de máximo 5 MB cada una. Los documentos se envían al servidor seguro de CIRCULA para revisión; no quedan guardados en esta página.</p>
+          <button class="button primary" type="submit">Enviar registro para revisión</button>
+        </form>
+        <form id="link-form" class="account-form" hidden><div class="form-intro"><strong>Vincular una cuenta existente</strong><span>Usa el código que ya recibiste en Telegram. Esto no crea otro perfil ni cambia tu plan.</span></div><label>Código CIRCULA<input name="codigo" placeholder="CIRC-00001" pattern="CIRC-[0-9]{4,}" required></label><label>Contraseña nueva<input name="contrasena" type="password" minlength="12" autocomplete="new-password" required></label><label>Repite la contraseña<input name="confirmacion" type="password" minlength="12" autocomplete="new-password" required></label><label>Documento, cara frontal<input name="documento_frontal" type="file" accept="image/jpeg,image/png" required></label><label>Documento, cara posterior<input name="documento_posterior" type="file" accept="image/jpeg,image/png" required></label><p class="status-note">Cada imagen debe ser JPG o PNG y pesar máximo 5 MB. La vinculación queda pendiente de aprobación.</p><button class="button primary" type="submit">Solicitar vinculación</button></form>
+        <div id="account-result" class="status-note" role="status"></div>
+      </div>
+      <div id="profile-view" hidden></div>
+      <div id="subscription-view" hidden>
+        <h2>📅 Mi suscripción</h2>
+        <p class="section-intro" id="subscription-status">Cargando tu información de suscripción…</p>
+        <div id="subscription-details"></div>
+        <button class="button soft" id="renew-subscription" hidden>Renovar ahora →</button>
+      </div>
+    </section>
+  </main>
+  <dialog id="payment-dialog" class="payment-dialog"><button type="button" id="payment-dialog-close" class="dialog-close" aria-label="Cerrar">×</button><span class="eyebrow">PAGO OFICIAL CIRCULA</span><h2 id="payment-dialog-title">Pagar plan</h2><p id="payment-dialog-copy"></p><a id="payment-dialog-go" class="button primary" href="https://t.me/CIRCULAMarketbot" target="_blank" rel="noopener noreferrer">Abrir el bot oficial →</a><p class="payment-note">El bot te entrega el QR vigente de Nequi o Daviplata y recibe el comprobante para revisión.</p></dialog>
+  <footer><a class="brand footer-brand" href="#inicio" data-page="inicio"><img src="assets/circula_logo.jpg" alt="" width="34" height="34"><span>CIRCULA <small>MARKET</small></span></a><span>Conectamos oportunidades para que todo circule.</span><button class="text-button" data-page="nosotros" data-scroll-target="asistente">¿Necesitas ayuda? →</button></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <datalist id="colombia-municipalities"></datalist>
+  <script src="config.js"></script><script src="municipalities.js"></script><script src="autocomplete.js"></script><script src="app.js"></script><script src="homepage.js"></script><script src="locations.js"></script>
+</body>
+</html>
