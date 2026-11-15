@@ -1,0 +1,141 @@
+:root {
+  --mint: #42e9bf;
+  --mint-dark: #078b75;
+  --paper: #f5fffb;
+  --line: #d5efe5;
+  --shadow: 0 20px 55px #008d7020;
+}
+
+.hero {
+  background:
+    radial-gradient(ellipse at 78% 42%, #b9ffea75 0, #e7fff740 30%, transparent 60%),
+    radial-gradient(ellipse at 12% 5%, #d3fff46b 0, transparent 44%);
+}
+
+.hero-mark {
+  background: radial-gradient(circle at 33% 25%, #64f4d1, #29d9b0 46%, #078b75 100%);
+  box-shadow: 0 22px 68px #04aa884f, 0 0 0 14px #6ff3d31a, 0 0 72px #66f0d15c;
+}
+
+.hero-mark img {
+  width: 76%;
+  height: 76%;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 4px #075e5038);
+}
+
+.orbit { border-color: #72ddc2; }
+.float-card { border-color: #cbf3e6; box-shadow: 0 14px 35px #008f7021; }
+.primary { background: linear-gradient(110deg, #12a98e, #087d6d); box-shadow: 0 8px 22px #0b9d813d; }
+.category-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.category-card {
+  min-height: 168px;
+  background: linear-gradient(145deg, #ffffff, #f1fff9);
+  border-color: #d4f0e5;
+  box-shadow: 0 7px 24px #087e720b;
+}
+.category-card:hover {
+  border-color: #54dcb9;
+  box-shadow: 0 15px 34px #079c7d26, 0 0 0 3px #66e7c329;
+}
+.category-icon {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 15px;
+  background: linear-gradient(145deg, #e4fff4, #c8f7e7);
+  box-shadow: inset 0 1px #fff, 0 5px 13px #0e9c7715;
+}
+.restaurant-section { background: linear-gradient(135deg, #eafff6, #e2f8f0 55%, #effff8); }
+.assistant-band { box-shadow: 0 18px 45px #0b67562e; }
+.assistant-orb { background: radial-gradient(circle at 35% 30%, #63edcd, #12a78b); color: white; box-shadow: 0 0 0 9px #ffffff0d, 0 0 35px #42e9bf59; }
+.eyebrow { color: #078b75; }
+.assistant-band .eyebrow { color: #78f0d2; }
+.account-glow { color: #087665; background: linear-gradient(135deg, #e0fff4, #abf6df); box-shadow: 0 7px 22px #1bb89135, inset 0 1px #fff; }
+.account-invite { margin-top: 30px; padding: 27px 30px; display: flex; align-items: center; gap: 20px; border: 1px solid #a9ecd7; border-radius: 22px; background: radial-gradient(ellipse at 3% 12%, #c8ffec, transparent 52%), linear-gradient(115deg, #edfff7, #dcf8ed); box-shadow: 0 12px 32px #078b7517; }
+.invite-symbol { width: 55px; height: 55px; flex: 0 0 55px; display: grid; place-items: center; border-radius: 17px; color: white; font-size: 25px; background: linear-gradient(145deg, #45e8bf, #079477); box-shadow: 0 7px 18px #078b7538; }
+.account-invite h3 { margin: 5px 0; font-size: 20px; }
+.account-invite p { margin: 0; color: var(--muted); line-height: 1.6; font-size: 14px; }
+.account-invite>div:nth-child(2) { flex: 1; }
+.invite-actions { display: flex; gap: 9px; flex-wrap: wrap; }
+.invite-login { background: #fff; color: var(--deep); border: 1px solid #bce8d9; }
+.form-intro { display: grid; gap: 5px; padding: 15px 17px; border-radius: 14px; color: var(--deep); background: linear-gradient(120deg,#e8fff5,#f6fffb); border: 1px solid #d1f0e4; line-height: 1.55; }
+.form-intro span { color: var(--muted); font-size: 13px; font-weight: 400; }
+.account-form label small { color: var(--muted); font-weight: 400; }
+.account-form .check-row { display: flex; align-items: flex-start; gap: 10px; font-weight: 500; line-height: 1.55; }
+.account-form .check-row input { width: 19px; height: 19px; margin: 1px 0 0; flex: 0 0 19px; accent-color: var(--mint-dark); }
+.terms-summary { padding: 13px 15px; background: #f8fcfa; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.terms-summary summary { color: var(--mint-dark); font-weight: 700; cursor: pointer; }
+.terms-summary p { margin: 10px 0 0; }
+.account-tabs { gap: 5px; flex-wrap: wrap; }
+.account-tabs button { border-radius: 10px 10px 0 0; }
+.account-tabs button.selected { background: #e6fff5; }
+.account-form input[type="file"] { background: #f7fffb; padding: 10px; }
+.panel { border-color: #cbece0; box-shadow: 0 20px 54px #087e721a; }
+.chat-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.chat-action { border: 1px solid #a9ecd7; border-radius: 999px; padding: 8px 13px; color: #075f51; background: #effff8; font-weight: 700; cursor: pointer; }
+.chat-action:hover { border-color: #42c9a7; background: #e2fff4; }
+
+@media (max-width: 920px) {
+  .category-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero { background: radial-gradient(ellipse at 50% 8%, #c8ffed80, transparent 52%); }
+  .account-invite { align-items: flex-start; flex-wrap: wrap; padding: 22px; }
+  .account-invite>div:nth-child(2) { flex-basis: calc(100% - 78px); }
+  .invite-actions { width: 100%; }
+  .invite-actions .button { flex: 1; }
+}
+@media (max-width: 390px) {
+  .category-grid { grid-template-columns: 1fr; }
+}
+
+.store-search {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  gap: 12px;
+  align-items: end;
+  margin: 24px 0;
+}
+.store-search label {
+  display: grid;
+  gap: 6px;
+  color: var(--deep);
+  font-size: 13px;
+  font-weight: 700;
+}
+.store-search input {
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid #cadbd4;
+  border-radius: 12px;
+  background: white;
+}
+.store-plans {
+  margin-top: 30px;
+  padding: 22px;
+  border: 1px solid #bce8d9;
+  border-radius: 18px;
+  background: #f3fff9;
+}
+.store-plans p { margin-bottom: 8px; color: var(--muted); line-height: 1.6; }
+.store-product-image {
+  width: 100%;
+  max-height: 210px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: #effaf5;
+}
+.category-action { margin: 6px 8px 6px 0; }
+@media (max-width: 760px) {
+  .store-search { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 420px) {
+  .store-search { grid-template-columns: 1fr; }
+}
+ .chat-attachment{display:block;max-width:min(100%,360px);max-height:360px;margin-top:12px;border-radius:12px;object-fit:contain}.menu-product-image{width:72px;height:72px;flex:0 0 72px;border-radius:10px;object-fit:cover}.restaurant-menu-cover{display:block;width:100%;max-height:220px;margin:8px 0 12px;border-radius:14px;object-fit:cover}.menu-item-details{display:flex;flex:1;flex-direction:column;gap:4px}.chat-attach{display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.category-card .text-button{margin-top:14px;padding:0}.category-request-form{margin:28px 0 8px;padding:26px;border:1px solid #bfeada;border-radius:22px;background:linear-gradient(135deg,#f4fff9,#fff);box-shadow:var(--shadow);display:grid;gap:14px}.category-request-form[hidden]{display:none}.category-request-form .section-heading{margin:0}.category-request-form label{display:grid;gap:7px;color:var(--deep);font-size:14px;font-weight:700}.category-request-form input,.category-request-form select,.category-request-form textarea{width:100%;border:1px solid #cadbd4;border-radius:12px;padding:13px 15px;background:#fff;color:var(--ink)}.category-request-form textarea{resize:vertical;line-height:1.5}.category-request-form .status-note{margin:0;color:var(--muted)}.restaurant-register-form{grid-template-columns:repeat(2,minmax(0,1fr))}.restaurant-register-form .section-heading,.restaurant-register-form>button,.restaurant-register-form>.status-note{grid-column:1/-1}
+.account-requests{margin:1.5rem 0;padding:1.25rem;border:1px solid #d8eee5;border-radius:1rem;background:#f5fff9}.account-requests h3{margin-top:0}.account-requests ul{list-style:none;margin:0;padding:0}.account-requests li{padding:.75rem 0;border-top:1px solid #e0f0e8}.account-requests small{display:block;margin-top:.2rem;color:#617875}
