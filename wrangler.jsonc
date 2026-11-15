@@ -1,0 +1,9 @@
+{
+  // IMPORTANTE: "name" debe ser IGUAL al nombre del proyecto que ves en Cloudflare (Workers y Pages).
+  "name": "circula-web",
+  "compatibility_date": "2026-11-01",
+  // La web es solo HTML/CSS/JS: se sube la carpeta tal cual, sin código de servidor.
+  "assets": {
+    "directory": "./"
+  }
+}
