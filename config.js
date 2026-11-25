@@ -9,7 +9,7 @@ window.CIRCULA_CONFIG = {
   storageMode: 'server-managed',
   demoMode: false,
   appLandingUrl: 'https://circulamarket.com/#descargas',
-  appDownloadUrl: 'https://drive.google.com/uc?export=download&id=1bXHLwFuPX_-JRJJlzNEQgWO4dutZ-NLg',
+  appDownloadUrl: 'https://github.com/circulamarket-gif/circula-website/releases/download/v0.1.2/app-CirculaM.apk',
   appDownloadParts: [],
   appDownloadFilename: 'CirculaM.apk',
   appReleaseVersion: '0.1.2'
