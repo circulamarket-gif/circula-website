@@ -7,7 +7,7 @@
   const $$ = (selector) => [...document.querySelectorAll(selector)];
   const panel = $('#app-view');
   const views = ['menu-view', 'assistant-view', 'account-view', 'profile-view', 'subscription-view'];
-  const state = { category: '', poll: null, token: null, chatToken: sessionStorage.getItem('circula_chat_token'), chatLinked: sessionStorage.getItem('circula_chat_linked') === 'true', chatSessionPromise: null, chatBootstrapPromise: null, lastChatEventId: 0, chatRefreshing: false, chatSending: false, restaurantFilter: '', termsLoaded: false, termsLoading: false };
+  const state = { category: '', poll: null, token: null, sharedRestaurantId: '', sharedStoreId: '', sharedProductId: '', chatToken: sessionStorage.getItem('circula_chat_token'), chatLinked: sessionStorage.getItem('circula_chat_linked') === 'true', chatSessionPromise: null, chatBootstrapPromise: null, lastChatEventId: 0, chatRefreshing: false, chatSending: false, restaurantFilter: '', termsLoaded: false, termsLoading: false };
   let toastTimer;
 
   async function api(path, options = {}, root = base) {
@@ -22,6 +22,41 @@
     return body;
   }
   function notify(message) { const t=$('#toast'); t.textContent=message; t.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),3600); }
+  function publicShareUrl(params, page){
+    try{
+      const configured=String(cfg.publicSiteUrl||'').trim();
+      const url=new URL(configured||location.href,location.href);
+      if(url.protocol!=='https:'&&!['localhost','127.0.0.1'].includes(url.hostname))return '';
+      url.search='';
+      Object.entries(params).forEach(([key,value])=>{if(value!==undefined&&value!==null&&String(value).trim())url.searchParams.set(key,String(value));});
+      url.hash=page;
+      return url.href;
+    }catch(_){return '';}
+  }
+  function telegramStartUrl(payload){
+    try{
+      const url=new URL(String(cfg.telegramBotUrl||''));
+      if(!['t.me','www.t.me','telegram.me','www.telegram.me'].includes(url.hostname)||url.protocol!=='https:')return '';
+      url.searchParams.set('start',payload);
+      return url.href;
+    }catch(_){return '';}
+  }
+  function appendSharePanel(parent,{title,description,params,page,telegramPayload}){
+    const box=document.createElement('section');box.className='circula-share-box';
+    const heading=document.createElement('h3');heading.textContent=title;
+    const note=document.createElement('p');note.textContent=description;
+    box.append(heading,note);
+    const webUrl=publicShareUrl(params,page);
+    const botUrl=telegramStartUrl(telegramPayload);
+    let appUrl='';try{const candidate=new URL(String(cfg.appLandingUrl||cfg.appDownloadUrl||''),location.href);if(candidate.protocol==='https:'||candidate.origin===location.origin)appUrl=candidate.href;}catch(_){}
+    const actions=document.createElement('div');actions.className='circula-share-actions';
+    const shareText=[title,webUrl,botUrl&&`Abrir CIRCULA en Telegram: ${botUrl}`,`Descubre productos, tiendas, restaurantes y servicios en CIRCULA.${appUrl?` Descarga la app: ${appUrl}`:''}`].filter(Boolean).join('\n\n');
+    const copy=document.createElement('button');copy.type='button';copy.className='button soft';copy.textContent='Copiar invitación';copy.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(shareText);notify('Invitación copiada.');}catch(_){window.prompt('Copia y comparte esta invitación:',shareText);}});actions.append(copy);
+    const nativeShare=document.createElement('button');nativeShare.type='button';nativeShare.className='button soft';nativeShare.textContent='Compartir…';nativeShare.addEventListener('click',async()=>{if(navigator.share){try{await navigator.share({title,text:shareText,url:webUrl||botUrl});}catch(error){if(error.name!=='AbortError')notify('No se pudo abrir el menú para compartir.');}}else{try{await navigator.clipboard.writeText(shareText);notify('Invitación copiada.');}catch(_){window.prompt('Copia y comparte esta invitación:',shareText);}}});actions.append(nativeShare);
+    if(botUrl){const bot=document.createElement('a');bot.className='button primary';bot.href=botUrl;bot.target='_blank';bot.rel='noopener noreferrer';bot.textContent='Abrir categoría en Telegram';actions.append(bot);}
+    if(appUrl){const app=document.createElement('a');app.className='button soft';app.href=appUrl;app.target='_blank';app.rel='noopener noreferrer';app.textContent='Descargar la app';actions.append(app);}
+    box.append(actions);parent.append(box);
+  }
   let activePage = 'inicio';
   function showPage(name, scrollTarget = '') {
     activePage = name;
@@ -89,22 +124,32 @@
         api(`/restaurantes${params.size?'?'+params:''}`,{},chatBase),
         api('/restaurantes/categorias',{},chatBase)
       ];
-      if(!home&&city){
-        requests.push(api(`/ubicaciones/barrios?ciudad=${encodeURIComponent(city)}`,{},chatBase));
-      }
       const results=await Promise.all(requests);
       const data=results[0];
       const categories=results[1];
-      const zones=results[2];
       renderRestaurants(container,data.items||[],'No hay restaurantes disponibles con esos filtros.');
+      if(state.sharedRestaurantId){const wanted=state.sharedRestaurantId;state.sharedRestaurantId='';loadMenu({id:wanted,nombre:'Restaurante',ciudad:city});return;}
       if(!home){
         renderCategories(categories.items||[]);
-        if(zones&&zones.items){
-          renderZones(zones.items);
-        }
       }
     }
     catch(error){container.innerHTML=`<div class="empty-state">${escapeHtml(error.message)} <button class="text-button retry-restaurants">Reintentar</button></div>`; container.querySelector('.retry-restaurants')?.addEventListener('click',()=>loadCatalog(home));}
+  }
+  async function loadZones() {
+    const city=$('#catalog-city').value.trim(), status=$('#zone-status');
+    renderZones([]);
+    status.hidden=true;
+    if(!city)return;
+    try {
+      const zones=await api(`/ubicaciones/barrios?ciudad=${encodeURIComponent(city)}`,{},chatBase);
+      if($('#catalog-city').value.trim()!==city)return;
+      renderZones(zones.items);
+    } catch(error) {
+      if($('#catalog-city').value.trim()!==city)return;
+      console.error('No se pudieron cargar los barrios:',error);
+      status.textContent='No pudimos cargar las sugerencias de barrios. Puedes escribir el sector.';
+      status.hidden=false;
+    }
   }
   function renderZones(zones){
     const input=$('#catalog-zone');
@@ -159,7 +204,10 @@
       if(action)startCategoryAction(action,`Consultar ${productName}`);
       else startChatPrompt(`Quiero consultar por ${productName} de ${item.tienda||'esta tienda'}.`);
     });
-    card.append(image,h,shop,status,planDesc,location,description,price,delivery,minOrder,rating,note,button); return card;
+    card.append(image,h,shop,status,planDesc,location,description,price,delivery,minOrder,rating,note,button);
+    const storeId=item.tienda_id??item.store_id;
+    if(storeId){appendSharePanel(card,{title:`Comparte ${item.store||item.tienda||'esta tienda'}`,description:'Invita a otras personas a encontrar sus productos aprobados en CIRCULA.',params:{tienda:storeId,producto:productId,ciudad:item.city||item.ciudad,codigo_municipio:item.codigo_municipio,tipo:item.type||item.tipo_negocio,zona:item.zone||item.zona},page:'tiendas',telegramPayload:'tiendas'});}
+    return card;
   }
   async function loadStores() {
     const container=$('#store-results');
@@ -171,7 +219,8 @@
     try {
       const data=await api(`/tiendas${params.size?'?'+params:''}`,{},chatBase);
       container.replaceChildren();
-      const items=Array.isArray(data.items)?data.items:[];
+      let items=Array.isArray(data.items)?data.items:[];
+      if(state.sharedStoreId){const storeId=state.sharedStoreId,productId=state.sharedProductId;const matches=items.filter(item=>String(item.tienda_id??item.store_id)===storeId);items=productId?matches.filter(item=>String(item.producto_id??item.product_id)===productId):matches;if(!items.length){container.innerHTML='<div class=\"empty-state\">No encontramos productos activos de esa tienda en esta búsqueda. Vuelve al catálogo para explorar otras opciones.</div>';return;}state.sharedStoreId='';state.sharedProductId='';}
       if(!items.length){container.innerHTML='<div class="empty-state">No encontramos productos aprobados con esos filtros.</div>';return;}
       items.forEach(item=>container.append(storeCard(item)));
     } catch(error) {
@@ -193,7 +242,7 @@
     $('#view-eyebrow').textContent='RESTAURANTES'; $('#main-nav').classList.remove('open'); $('#menu-toggle').setAttribute('aria-expanded','false');
     const view=$('#menu-view'); view.innerHTML='<h2>Cargando menú…</h2>';
     try { const data=await api(`/restaurantes/${encodeURIComponent(item.id)}/menu`,{},chatBase); const restaurant=data.restaurante||item; view.replaceChildren(); const wrap=document.createElement('div');wrap.className='restaurant-detail';const h=document.createElement('h2');h.textContent=restaurant.nombre||item.nombre||'Restaurante';wrap.append(h);const isOpen=restaurant.abierto!==false;const status=document.createElement('p');status.textContent=(isOpen?'🟢 Abierto':'🔴 Cerrado')+(restaurant.horario?` · ${restaurant.horario}`:'');status.style.fontSize='0.95em';status.style.fontWeight='600';wrap.append(status);[restaurant.ciudad,restaurant.descripcion,restaurant.modalidad_entrega].filter(Boolean).forEach(t=>{const p=document.createElement('p');p.className='section-intro';p.textContent=t;wrap.append(p);});
-      const cats=data.categorias||[]; if(!cats.length){const p=document.createElement('p');p.className='empty-state';p.textContent='Este restaurante aún no tiene menú publicado.';wrap.append(p);} cats.forEach(cat=>{const section=document.createElement('section');section.className='menu-category';const title=document.createElement('h3');title.textContent=cat.nombre||'Menú';section.append(title);if(cat.portada_url){const cover=document.createElement('img');cover.className='restaurant-menu-cover';cover.alt=`Portada ${cat.nombre||'de categoría'}`;cover.loading='lazy';cover.src=apiAsset(cat.portada_url);cover.addEventListener('error',()=>cover.remove());section.append(cover);}(cat.productos||[]).forEach(prod=>{const row=document.createElement('div');row.className='menu-item';if(prod.foto_url){const image=document.createElement('img');image.className='menu-product-image';image.alt='';image.loading='lazy';image.src=apiAsset(prod.foto_url);image.addEventListener('error',()=>image.remove());row.append(image);}const details=document.createElement('span');details.className='menu-item-details';const name=document.createElement('strong');name.textContent=prod.nombre||'Producto';details.append(name);if(prod.descripcion){const description=document.createElement('small');description.textContent=prod.descripcion;details.append(description);}const price=document.createElement('strong');price.textContent=`$${Number(prod.precio_cop||0).toLocaleString('es-CO')} COP`;row.append(details,price);section.append(row);});wrap.append(section);});const order=document.createElement('button');order.type='button';order.className='button primary';order.textContent='Quiero pedir comida por CIRCULA →';order.disabled=!isOpen;order.addEventListener('click',()=>startCategoryAction('restaurantes','Consultar o pedir en un restaurante'));wrap.append(order);view.append(wrap);
+      const cats=data.categorias||[]; if(!cats.length){const p=document.createElement('p');p.className='empty-state';p.textContent='Este restaurante aún no tiene menú publicado.';wrap.append(p);} cats.forEach(cat=>{const section=document.createElement('section');section.className='menu-category';const title=document.createElement('h3');title.textContent=cat.nombre||'Menú';section.append(title);if(cat.portada_url){const cover=document.createElement('img');cover.className='restaurant-menu-cover';cover.alt=`Portada ${cat.nombre||'de categoría'}`;cover.loading='lazy';cover.src=apiAsset(cat.portada_url);cover.addEventListener('error',()=>cover.remove());section.append(cover);}(cat.productos||[]).forEach(prod=>{const row=document.createElement('div');row.className='menu-item';if(prod.foto_url){const image=document.createElement('img');image.className='menu-product-image';image.alt='';image.loading='lazy';image.src=apiAsset(prod.foto_url);image.addEventListener('error',()=>image.remove());row.append(image);}const details=document.createElement('span');details.className='menu-item-details';const name=document.createElement('strong');name.textContent=prod.nombre||'Producto';details.append(name);if(prod.descripcion){const description=document.createElement('small');description.textContent=prod.descripcion;details.append(description);}const price=document.createElement('strong');price.textContent=`$${Number(prod.precio_cop||0).toLocaleString('es-CO')} COP`;row.append(details,price);section.append(row);});wrap.append(section);});const order=document.createElement('button');order.type='button';order.className='button primary';order.textContent='Quiero pedir comida por CIRCULA →';order.disabled=!isOpen;order.addEventListener('click',()=>startCategoryAction('restaurantes','Consultar o pedir en un restaurante'));wrap.append(order);appendSharePanel(wrap,{title:`Comparte ${restaurant.nombre||item.nombre||'este restaurante'}`,description:'Envía el enlace directo del perfil y menú a tus contactos. También pueden explorar CIRCULA o abrir la categoría en Telegram.',params:{restaurante:item.id,ciudad:restaurant.ciudad||item.ciudad,codigo_municipio:restaurant.codigo_municipio||item.codigo_municipio,zona:restaurant.zona||item.zona,categoria:restaurant.categoria_slug||item.categoria_slug||item.categoria?.slug},page:'restaurantes',telegramPayload:'restaurantes'});view.append(wrap);
     } catch(error){view.innerHTML=`<h2>${escapeHtml(item.nombre||'Restaurante')}</h2><p class="empty-state">${escapeHtml(error.message)}</p><button class="back-button" id="return-catalog">← Volver al catálogo</button>`;$('#return-catalog').onclick=()=>showView('restaurantes');}
   }
   function escapeHtml(text){return String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -354,7 +403,8 @@
       $('#account-result').textContent=error.message;
     }finally{state.termsLoading=false;}
   }
-  async function loadProfile(){const token=authToken();if(!token)return;const view=$('#profile-view');views.forEach(id=>{$(`#${id}`).hidden=true;});view.hidden=false;try{const result=await api('/app/me',{headers:{Authorization:`Bearer ${token}`}});const u=result.user||result;window.dispatchEvent(new CustomEvent('circula:profile-ready',{detail:u}));let requests=[];try{const own=await api('/solicitudes?limite=50',{headers:{Authorization:`Bearer ${token}`}});requests=Array.isArray(own.items)?own.items:[];}catch(_){}const rows=requests.length?requests.map(item=>`<li><strong>#${escapeHtml(item.id)}</strong> · ${escapeHtml(item.operacion_tipo||'Solicitud')} · ${escapeHtml(item.estado||'En proceso')}<small>${escapeHtml(item.fecha||'')} · ${escapeHtml(item.canal_origen||'CIRCULA')}</small></li>`).join(''):'<li>Todavía no tienes solicitudes registradas.</li>';view.innerHTML=`<h2>Hola, ${escapeHtml(u.nombre||'usuario')}</h2><p class="section-intro">Código: ${escapeHtml(u.codigo||'')} · Plan: ${escapeHtml(u.plan||'Gratis')}</p><section class="account-requests"><h3>Mis solicitudes</h3><ul>${rows}</ul></section><button class="button soft" id="logout">Cerrar sesión</button>`;$('#logout').onclick=async()=>{try{await api('/app/logout',{method:'POST',headers:{Authorization:`Bearer ${token}`}});}catch(_){}sessionStorage.removeItem('circula_access_token');window.dispatchEvent(new Event('circula:logout'));notify('Sesión cerrada.');showView('cuenta');};}catch(error){sessionStorage.removeItem('circula_access_token');$('#account-result').textContent=error.message;}}
+  async function loadProfile(){const token=authToken();if(!token)return;const view=$('#profile-view');views.forEach(id=>{$(`#${id}`).hidden=true;});view.hidden=false;try{const result=await api('/app/me',{headers:{Authorization:`Bearer ${token}`}});const u=result.user||result;window.dispatchEvent(new CustomEvent('circula:profile-ready',{detail:u}));let requests=[];try{const own=await api('/solicitudes?limite=50',{headers:{Authorization:`Bearer ${token}`}});requests=Array.isArray(own.items)?own.items:[];}catch(_){}const rows=requests.length?requests.map(item=>`<li><strong>#${escapeHtml(item.id)}</strong> · ${escapeHtml(item.operacion_tipo||'Solicitud')} · ${escapeHtml(item.estado||'En proceso')}<small>${escapeHtml(item.fecha||'')} · ${escapeHtml(item.canal_origen||'CIRCULA')}</small></li>`).join(''):'<li>Todavía no tienes solicitudes registradas.</li>';view.innerHTML=`<h2>Hola, ${escapeHtml(u.nombre||'usuario')}</h2><p class="section-intro">Código: ${escapeHtml(u.codigo||'')} · Plan: ${escapeHtml(u.plan||'Gratis')}</p><section class="account-requests"><h3>Mis solicitudes</h3><ul>${rows}</ul></section><section class="account-requests" id="user-mailbox"><h3>Buzón de ayuda CIRCULA</h3><p>Escribe al equipo coordinador; la respuesta llegará aquí.</p><p>Cargando mensajes…</p></section><button class="button soft" id="logout">Cerrar sesión</button>`;loadUserMailbox(token);$('#logout').onclick=async()=>{try{await api('/app/logout',{method:'POST',headers:{Authorization:`Bearer ${token}`}});}catch(_){}sessionStorage.removeItem('circula_access_token');window.dispatchEvent(new Event('circula:logout'));notify('Sesión cerrada.');showView('cuenta');};}catch(error){sessionStorage.removeItem('circula_access_token');$('#account-result').textContent=error.message;}}
+  async function loadUserMailbox(token){const panel=$('#user-mailbox');if(!panel)return;try{const data=await api('/crm/buzon/usuario',{headers:{Authorization:`Bearer ${token}`}});const messages=Array.isArray(data.mensajes)?data.mensajes:[];const list=messages.length?messages.slice(-30).map(m=>`<li><strong>${m.autor_tipo==='usuario'?'Tú':'Coordinación'}</strong> · ${escapeHtml(m.fecha||'')}<p>${escapeHtml(m.texto||'')}</p></li>`).join(''):'<li>Todavía no hay mensajes.</li>';panel.innerHTML=`<h3>Buzón de ayuda CIRCULA</h3><p>Escribe al equipo coordinador; la respuesta llegará aquí.</p><ul>${list}</ul><form id="user-mailbox-form"><label>Tu mensaje<textarea name="texto" maxlength="2000" required></textarea></label><button class="button primary" type="submit">Enviar al coordinador</button><p class="status-note" role="status"></p></form>`;panel.querySelector('form').addEventListener('submit',async e=>{e.preventDefault();const form=e.currentTarget;const status=form.querySelector('.status-note');const text=new FormData(form).get('texto').toString().trim();if(!text)return;status.textContent='Enviando…';try{await api('/crm/buzon/usuario',{method:'POST',headers:{Authorization:`Bearer ${token}`},body:JSON.stringify({texto:text})});await loadUserMailbox(token);}catch(error){status.textContent=error.message||'No se pudo enviar el mensaje.';}});}catch(error){panel.innerHTML=`<h3>Buzón de ayuda CIRCULA</h3><p class="status-note">${escapeHtml(error.message||'No pudimos cargar el buzón.')}</p><button class="button soft" type="button" id="mailbox-retry">Reintentar</button>`;panel.querySelector('#mailbox-retry')?.addEventListener('click',()=>loadUserMailbox(token));}}
   async function loadSubscription(){const token=authToken();if(!token)return;const view=$('#subscription-view');views.forEach(id=>{$(`#${id}`).hidden=true;});view.hidden=false;const status=$('#subscription-status');const details=$('#subscription-details');const renewBtn=$('#renew-subscription');status.textContent='Cargando tu información de suscripción…';try{const result=await api('/app/me',{headers:{Authorization:`Bearer ${token}`}});const sub=result.suscripcion||{};if(!sub.plan||sub.plan==='Gratis'){details.innerHTML='<p class="empty-state">No tienes una suscripción activa. <a class="text-button" href="#planes">Ver planes disponibles →</a></p>';status.textContent='';return;}const diasFaltantes=sub.dias_restantes||0;const vencimiento=sub.fecha_vencimiento||'';status.textContent=`Plan ${sub.plan} activo · Te quedan ${diasFaltantes} días`;details.innerHTML=`<div class="subscription-details"><p><strong>Plan:</strong> ${escapeHtml(sub.plan)}</p><p><strong>Días restantes:</strong> ${diasFaltantes}</p><p><strong>Vencimiento:</strong> ${vencimiento}</p><p class="status-note">${sub.beneficios||'Acceso a beneficios del plan.'}</p></div>`;if(diasFaltantes<=5&&diasFaltantes>0)renewBtn.hidden=false;}catch(error){status.textContent=error.message;details.textContent='';}}
   $('#renew-subscription').addEventListener('click',()=>startCategoryAction('mi_suscripcion','Mi suscripción'));
   $('#login-form').addEventListener('submit',async e=>{e.preventDefault();const data=Object.fromEntries(new FormData(e.currentTarget));$('#account-result').textContent='Conectando…';try{const result=await api('/app/login',{method:'POST',body:JSON.stringify({codigo:data.codigo,contrasena:data.contrasena})});if(result.state==='pending'||result.state==='bot_verification_pending'){ $('#account-result').textContent=result.message||'Tu cuenta sigue pendiente de revisión. Te avisaremos cuando termine.';return;}const token=result.token||result.access_token;if(!token)throw new Error('El servidor no devolvió el acceso de la cuenta.');sessionStorage.setItem('circula_access_token',token);$('#account-result').textContent='';loadProfile();}catch(error){$('#account-result').textContent=error.message;}});
@@ -408,20 +458,53 @@
   $('#back-home').addEventListener('click',()=>showPage(activePage));
   $('#catalog-search').addEventListener('click',()=>loadCatalog());
   $('#catalog-type').addEventListener('change',event=>{state.restaurantFilter=event.target.value;loadCatalog();});
-  $('#catalog-city').addEventListener('change',()=>{$('#catalog-zone').value='';loadCatalog();});
+  $('#catalog-city').addEventListener('change',()=>{$('#catalog-zone').value='';loadZones();loadCatalog();});
   $('#catalog-zone').addEventListener('change',()=>loadCatalog());
   $$('[data-page]').forEach(button=>button.addEventListener('click',()=>showPage(button.dataset.page,button.dataset.scrollTarget||'')));
   const apkUrl=String(cfg.appDownloadUrl||'').trim();
   const apkVersion=String(cfg.appReleaseVersion||'').trim();
+  const downloadName=/^[A-Za-z0-9._-]+\.apk$/i.test(String(cfg.appDownloadFilename||''))?String(cfg.appDownloadFilename):'CirculaM.apk';
   const downloadLinks=$$('.download-cta');
   let safeApkUrl='';
   if(apkUrl){try{const url=new URL(apkUrl,window.location.href);if(url.protocol==='https:'||url.origin===window.location.origin)safeApkUrl=url.href;}catch(_){}}
-  if(safeApkUrl){downloadLinks.forEach(link=>{link.href=safeApkUrl;link.removeAttribute('aria-disabled');link.setAttribute('download','');});$('#download-status').textContent='Descarga disponible desde el enlace oficial de CIRCULA.';$('#release-version').textContent=apkVersion||'Versión oficial';}else{downloadLinks.forEach(link=>{link.href='#descargas';link.setAttribute('aria-disabled','true');});}
+  const configuredParts=Array.isArray(cfg.appDownloadParts)?cfg.appDownloadParts:[];
+  const safePartUrls=configuredParts.map(part=>{try{const url=new URL(String(part),window.location.href);return url.origin===window.location.origin&&(url.protocol==='https:'||url.protocol==='http:')?url.href:'';}catch(_){return '';}});
+  const hasSplitApk=safePartUrls.length>0&&safePartUrls.every(Boolean);
+  if(hasSplitApk){
+    downloadLinks.forEach(link=>{
+      link.href='#descargas';link.removeAttribute('aria-disabled');link.removeAttribute('download');link.textContent='Descargar beta para Android';
+      link.addEventListener('click',async event=>{
+        event.preventDefault();if(link.dataset.downloading==='true')return;
+        link.dataset.downloading='true';link.setAttribute('aria-busy','true');link.textContent='Preparando APK…';
+        $('#download-status').textContent=`Descargando ${safePartUrls.length} partes para preparar ${downloadName}. Mantén esta página abierta.`;
+        try{
+          const chunks=await Promise.all(safePartUrls.map(async(url,index)=>{const response=await fetch(url,{cache:'no-store'});if(!response.ok)throw new Error(`No se pudo descargar la parte ${index+1} de ${safePartUrls.length}.`);return response.blob();}));
+          const apk=new Blob(chunks,{type:'application/vnd.android.package-archive'});const objectUrl=URL.createObjectURL(apk);const anchor=document.createElement('a');anchor.href=objectUrl;anchor.download=downloadName;anchor.hidden=true;document.body.append(anchor);anchor.click();anchor.remove();setTimeout(()=>URL.revokeObjectURL(objectUrl),60000);
+          $('#download-status').textContent='Descarga beta iniciada. En Android, abre CirculaM.apk y permite la instalación cuando el teléfono lo solicite.';
+        }catch(error){$('#download-status').textContent=error.message||'No se pudo preparar el archivo. Intenta nuevamente.';notify('No se pudo preparar la descarga de CIRCULA.');}
+        finally{link.dataset.downloading='false';link.removeAttribute('aria-busy');link.textContent='Descargar beta para Android';}
+      });
+    });
+    $('#download-status').textContent='Beta Android disponible para pruebas. Esta descarga no es la versión publicada en Google Play.';$('#release-version').textContent=apkVersion||'Beta de prueba Android';
+  }else if(safeApkUrl){
+    const opensDrive=new URL(safeApkUrl).hostname==='drive.google.com';
+    downloadLinks.forEach(link=>{link.href=safeApkUrl;link.removeAttribute('aria-disabled');if(opensDrive){link.removeAttribute('download');link.textContent='Abrir descarga en Google Drive';}else{link.setAttribute('download','');}});
+    $('#download-status').textContent=opensDrive?'Se abrirá Google Drive. Allí pulsa Descargar para guardar CirculaM.apk en tu dispositivo.':'Descarga disponible desde el enlace oficial de CIRCULA.';
+    $('#release-version').textContent=apkVersion||'Versión oficial';
+  }
+  else{downloadLinks.forEach(link=>{link.href='#descargas';link.setAttribute('aria-disabled','true');});}
   $('#store-search-button').addEventListener('click',loadStores);
   $('#store-owner-start').addEventListener('click',()=>startCategoryAction('tiendas_registrar','Solicitar la vinculación de mi tienda'));
   $('#location-request').addEventListener('click',()=>{const place=$('#catalog-city').value.trim();startChatPrompt(`Solicito agregar esta localidad a CIRCULA: ${place||''}`);});
   $('#menu-toggle').addEventListener('click',()=>{const nav=$('#main-nav');nav.classList.toggle('open');$('#menu-toggle').setAttribute('aria-expanded',String(nav.classList.contains('open')));});
-  const requestedPage = window.location.hash.slice(1);
+  const shareParams=new URLSearchParams(location.search);
+  const safeShareId=value=>/^[A-Za-z0-9_-]{1,64}$/.test(value||'')?value:'';
+  state.sharedRestaurantId=safeShareId(shareParams.get('restaurante'));
+  state.sharedStoreId=safeShareId(shareParams.get('tienda'));
+  state.sharedProductId=safeShareId(shareParams.get('producto'));
+  if(state.sharedRestaurantId){$('#catalog-city').value=shareParams.get('ciudad')||'';$('#catalog-city').dataset.municipalityCode=shareParams.get('codigo_municipio')||'';$('#catalog-zone').value=shareParams.get('zona')||'';state.restaurantFilter=shareParams.get('categoria')||'';}
+  if(state.sharedStoreId){$('#store-city').value=shareParams.get('ciudad')||'';$('#store-city').dataset.municipalityCode=shareParams.get('codigo_municipio')||'';$('#store-type').value=shareParams.get('tipo')||'';$('#store-zone').value=shareParams.get('zona')||'';}
+  const requestedPage = state.sharedRestaurantId?'restaurantes':state.sharedStoreId?'tiendas':window.location.hash.slice(1);
   const availablePages = new Set($$('[data-page-section]').map(section => section.dataset.pageSection));
   showPage(availablePages.has(requestedPage) ? requestedPage : 'inicio');
   if(!base) notify('Configura la dirección de la API para activar catálogo, chat y cuentas.');

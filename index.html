@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="styles-bright.css">
   <link rel="stylesheet" href="homepage.css">
+  <link rel="stylesheet" href="share.css">
 </head>
 <body>
   <header class="topbar">
@@ -24,6 +25,7 @@
       <button type="button" data-page="servicios" class="page-link">Servicios</button>
       <button type="button" data-page="restaurantes" class="page-link">Restaurantes</button>
       <button type="button" data-page="tiendas" class="page-link">Tiendas</button>
+      <button type="button" data-page="regalado" class="page-link" title="Regala artículos que ya no necesitas o conoce cómo solicitar uno con tu cuenta CIRCULA.">Regalado 🎁</button>
       <button type="button" data-page="descargas" class="page-link">Descargas</button>
       <button type="button" class="page-link" id="mi-suscripcion-nav" hidden data-open-request="mi_suscripcion">📅 Mi suscripción</button>
       <button class="nav-account" data-view="cuenta">Entrar / Registrarme</button>
@@ -48,25 +50,26 @@
     </section>
 
     <section class="downloads-page" id="descargas" data-page-section="descargas" hidden>
-      <div class="download-hero"><div class="download-copy"><span class="eyebrow">CIRCULA CONTIGO</span><h1>Todo lo que circula,<br><em>en tu celular.</em></h1><p>Descarga la aplicación oficial de CIRCULA Market para explorar productos, restaurantes, servicios y oportunidades desde tu teléfono.</p><div class="download-actions"><a class="button primary download-cta" href="#descargas" aria-disabled="true">APK disponible próximamente</a><span class="download-platform">Android · Archivo APK oficial</span></div><p class="download-status" id="download-status" role="status">Estamos preparando el enlace oficial de descarga.</p></div>
+      <div class="download-hero"><div class="download-copy"><span class="eyebrow">CIRCULA CONTIGO</span><h1>Todo lo que circula,<br><em>en tu celular.</em></h1><p>Prueba la versión beta para Android de CIRCULA Market y explora productos, restaurantes, servicios y oportunidades desde tu teléfono.</p><div class="download-actions"><a class="button primary download-cta" href="#descargas" aria-disabled="true">Abrir descarga en Google Drive</a><span class="download-platform">Android · Archivo APK beta para pruebas</span></div><p class="download-status" id="download-status" role="status">Se abrirá Google Drive; allí pulsa Descargar para guardar CirculaM.apk. Beta de prueba, no Google Play.</p></div>
         <div class="phone-preview" aria-label="Vista ilustrativa de CIRCULA en un celular"><div class="phone-frame"><div class="phone-camera"></div><div class="phone-screen"><div class="phone-top"><img src="assets/circula_logo.jpg" alt=""><span><b>CIRCULA</b><small>MARKET</small></span><span class="phone-user">●</span></div><div class="phone-welcome"><small>TODO CIRCULA</small><strong>¿Qué buscas hoy?</strong><span>Encuentra oportunidades cerca de ti.</span></div><div class="phone-categories"><span>🛍️<small>Productos</small></span><span>🍽️<small>Restaurantes</small></span><span>✨<small>Servicios</small></span><span>🏡<small>Inmuebles</small></span></div><div class="phone-feature"><small>DESTACADO</small><b>Descubre CIRCULA</b><span>Personas y negocios conectados</span></div><div class="phone-nav"><span>⌂</span><span>♡</span><span>＋</span><span>☰</span></div></div></div><span class="phone-orbit phone-orbit-one"></span><span class="phone-orbit phone-orbit-two"></span></div></div>
-      <div class="download-details"><article class="download-card download-android"><span class="download-icon">🤖</span><div><span class="eyebrow">ANDROID</span><h2>Descarga directa</h2><p>Cuando publiquemos el APK, podrás descargarlo desde aquí usando el enlace oficial de CIRCULA.</p><span class="release-badge" id="release-version">Próximamente</span></div><a class="button soft download-cta" href="#descargas" aria-disabled="true">Aún no disponible</a></article><article class="download-card"><span class="download-icon">🍎</span><div><span class="eyebrow">IPHONE Y IPAD</span><h2>Versión para iOS</h2><p>La descarga para iPhone se anunciará cuando la app esté disponible en la tienda correspondiente.</p><span class="release-badge">Próximamente</span></div></article></div>
-      <div class="download-help"><div><span class="eyebrow">INSTALACIÓN SEGURA</span><h2>Descárgala desde CIRCULA</h2><p>Cuando se habilite el APK, publicaremos aquí la versión oficial y los pasos para instalarla. Usa siempre el enlace de esta página para verificar que descargas el archivo correcto.</p></div><button type="button" class="button primary" data-view="asistente">¿Tienes dudas? Escríbenos →</button></div>
+      <div class="download-details"><article class="download-card download-android"><span class="download-icon">🤖</span><div><span class="eyebrow">ANDROID</span><h2>Descarga directa</h2><p>El enlace abre Google Drive; pulsa Descargar para guardar CirculaM.apk. Esta beta no corresponde a Google Play.</p><span class="release-badge" id="release-version">Próximamente</span></div><a class="button soft download-cta" href="#descargas" aria-disabled="true">Abrir descarga en Google Drive</a></article><article class="download-card"><span class="download-icon">🍎</span><div><span class="eyebrow">IPHONE Y IPAD</span><h2>Versión para iOS</h2><p>La descarga para iPhone se anunciará cuando la app esté disponible en la tienda correspondiente.</p><span class="release-badge">Próximamente</span></div></article></div>
+      <div class="download-help"><div><span class="eyebrow">INSTALACIÓN SEGURA</span><h2>Descárgala desde CIRCULA</h2><p>La página abre Google Drive para descargar la beta. Android puede pedir permiso para instalar una APK descargada desde el navegador.</p></div><button type="button" class="button primary" data-view="asistente">¿Tienes dudas? Escríbenos →</button></div>
     </section>
 
     <section class="marketplace-home" id="vitrina" data-page-section="inicio">
       <div class="section-heading market-heading">
         <div><span class="eyebrow">NOVEDADES DE LA COMUNIDAD</span><h2>Lo que circula hoy</h2></div>
-        <p>Productos, inmuebles y servicios compartidos por usuarios de CIRCULA.</p>
+        <p>Publicaciones de Compra y venta, Trueques, Inmuebles, Servicios, Empleo y Emprendimientos. Restaurantes y Tiendas y Panaderías conservan sus catálogos propios.</p>
       </div>
       <section class="vip-showcase" aria-label="Vitrina VIP CIRCULA">
         <div class="vip-heading"><span class="vip-star">✦</span><div><span class="eyebrow">VITRINA VIP</span><h3>Publicaciones con prioridad</h3></div><span class="vip-note">Prioridad según plan activo</span></div>
         <div id="vip-feature" class="vip-feature" aria-live="polite"><div class="vip-placeholder">✦</div><div class="vip-copy"><span class="demo-badge">MUESTRA</span><h4>Cargando publicaciones destacadas…</h4><p>Las publicaciones aprobadas aparecerán aquí.</p></div></div>
         <div class="carousel-controls"><button type="button" id="vip-prev" aria-label="Publicación VIP anterior">←</button><span id="vip-count">0 / 0</span><button type="button" id="vip-next" aria-label="Siguiente publicación VIP">→</button></div>
       </section>
-      <div class="market-subheading"><div><span class="eyebrow">EN MOVIMIENTO</span><h3>Más de CIRCULA</h3></div><div class="carousel-controls"><button type="button" id="market-prev" aria-label="Publicaciones anteriores">←</button><span id="market-count">0 / 0</span><button type="button" id="market-next" aria-label="Siguientes publicaciones">→</button></div></div>
+      <div class="market-subheading"><div><span class="eyebrow">EN MOVIMIENTO</span><h3>Más de CIRCULA</h3></div><div class="market-tools"><div class="market-view-switch" role="group" aria-label="Vista de publicaciones"><button type="button" id="market-view-grid" aria-label="Ver en cuadrícula" aria-pressed="true">▦</button><button type="button" id="market-view-list" aria-label="Ver en lista" aria-pressed="false">☰</button></div><div class="carousel-controls"><button type="button" id="market-prev" aria-label="Publicaciones anteriores">←</button><span id="market-count">0 / 0</span><button type="button" id="market-next" aria-label="Siguientes publicaciones">→</button></div></div></div>
       <div id="market-grid" class="market-grid" aria-live="polite"></div>
       <p id="market-status" class="market-status">Cargando publicaciones…</p>
+      <div class="market-upload-callout"><div><strong>¿Tienes algo para ofrecer?</strong><span>Inicia la publicación desde su categoría. Después de la revisión, aparecerá aquí y en la app si cumple las condiciones de su plan.</span></div><button type="button" class="button soft" data-open-request="compra_venta_menu">Iniciar publicación →</button></div>
       <div class="market-admin-entry"><button type="button" id="admin-curate" class="button soft" hidden>Administrar publicaciones de portada</button><span id="demo-note" class="demo-note" hidden>Ejemplos demostrativos · no son publicaciones reales</span></div>
       <section id="admin-curation-panel" class="admin-curation-panel" hidden>
         <div class="admin-panel-heading"><div><span class="eyebrow">SOLO PERSONAL AUTORIZADO</span><h3>Alimentar la portada</h3></div><button type="button" id="admin-close" class="text-button">Cerrar ×</button></div>
@@ -86,18 +89,27 @@
       <p class="payment-note">Los pagos se gestionan por los medios oficiales de CIRCULA. En el bot podrás elegir Nequi o Daviplata y recibir el QR correspondiente al plan. Nunca compartas claves ni códigos de seguridad.</p>
     </section>
 
+    <section class="section regalado-page" id="regalado" data-page-section="regalado" hidden>
+      <div class="regalado-banner">
+        <div class="regalado-symbol" aria-hidden="true">🎁</div>
+        <div><span class="eyebrow">DALE OTRA VUELTA</span><h2>Lo que ya no necesitas puede ser justo lo que alguien busca.</h2><p>En CIRCULA puedes ofrecer artículos para regalar y conocer las opciones para solicitar uno. Inicia sesión para continuar; las solicitudes para recibir regalos están sujetas al plan y a la revisión vigente.</p></div>
+        <button type="button" class="button primary" data-open-request="regalado" title="Abre el flujo de CIRCULA para conocer las opciones disponibles.">Ver opciones de Regalado →</button>
+      </div>
+    </section>
+
     <section class="section" id="explorar" data-page-section="servicios" hidden>
       <div class="section-heading"><div><span class="eyebrow">¿QUÉ NECESITAS HOY?</span><h2>Encuentra tu camino</h2></div><p>Elige una opción para empezar. El equipo de CIRCULA puede acompañarte durante el proceso.</p></div>
       <div class="category-grid" aria-label="Categorías de CIRCULA">
-        <article class="category-card"><span class="category-icon">🛍️</span><strong>Compra y venta</strong><small>Comprar, vender o hacer ambas cosas.</small><button type="button" class="text-button" data-open-request="compra_venta_menu">Ver opciones →</button></article>
-        <article class="category-card"><span class="category-icon">🔄</span><strong>Trueques / Permutas</strong><small>Intercambia productos o bienes.</small><button type="button" class="text-button" data-open-request="trueque">Iniciar solicitud →</button></article>
-        <article class="category-card"><span class="category-icon">🍔</span><strong>Restaurantes</strong><small>Busca restaurantes o registra el tuyo.</small><button type="button" class="text-button" data-open-request="restaurantes">Ver opciones →</button></article>
-        <article class="category-card"><span class="category-icon">🏪</span><strong>Tiendas y Panaderías</strong><small>Explora comercios y solicita vincular el tuyo.</small><button type="button" class="text-button" data-open-request="tiendas">Ver opciones →</button></article>
-        <article class="category-card"><span class="category-icon">🛠️</span><strong>Servicios</strong><small>Ofrece o busca servicios presenciales y virtuales.</small><button type="button" class="text-button" data-open-request="servicios">Iniciar solicitud →</button></article>
-        <article class="category-card"><span class="category-icon">🏠</span><strong>Inmuebles</strong><small>Busca o publica para venta y arriendo.</small><button type="button" class="text-button" data-open-request="inmuebles">Ver opciones →</button></article>
-        <article class="category-card"><span class="category-icon">💼</span><strong>Empleo</strong><small>Busca trabajo o encuentra trabajadores.</small><button type="button" class="text-button" data-open-request="empleo_menu">Ver opciones →</button></article>
-        <article class="category-card"><span class="category-icon">🚀</span><strong>Emprendedor / empresa</strong><small>Busca clientes o registra tu oferta empresarial.</small><button type="button" class="text-button" data-open-request="empresa">Ver opciones →</button></article>
-        <article class="category-card"><span class="category-icon">💡</span><strong>Otra necesidad / asesor</strong><small>Cuéntanos qué necesitas y lo registramos.</small><button type="button" class="text-button" data-open-request="otra">Iniciar solicitud →</button></article>
+        <article class="category-card" tabindex="0" data-help="Publica algo para vender o encuentra productos ofrecidos por otras personas y comercios."><span class="category-icon">🛍️</span><strong>Compra y venta</strong><small>Comprar, vender o hacer ambas cosas.</small><button type="button" class="text-button" data-open-request="compra_venta_menu">Ver opciones →</button></article>
+        <article class="category-card" tabindex="0" data-help="Propón un intercambio de productos o bienes y cuéntanos qué te gustaría recibir a cambio."><span class="category-icon">🔄</span><strong>Trueques / Permutas</strong><small>Intercambia productos o bienes.</small><button type="button" class="text-button" data-open-request="trueque">Iniciar solicitud →</button></article>
+        <article class="category-card" tabindex="0" data-help="Ofrece artículos que ya no necesitas o conoce cómo solicitar uno. Para recibir, inicia sesión y revisa los requisitos del plan vigente."><span class="category-icon">🎁</span><strong>Regalado</strong><small>Regala objetos o solicita recibirlos con un plan de pago activo.</small><button type="button" class="text-button" data-open-request="regalado">Ver opciones →</button></article>
+        <article class="category-card" tabindex="0" data-help="Encuentra restaurantes por ciudad y tipo de comida, consulta sus menús o solicita vincular tu restaurante."><span class="category-icon">🍔</span><strong>Restaurantes</strong><small>Busca restaurantes o registra el tuyo.</small><button type="button" class="text-button" data-open-request="restaurantes">Ver opciones →</button></article>
+        <article class="category-card" tabindex="0" data-help="Explora tiendas y panaderías por ubicación, o inicia la solicitud para vincular tu negocio y sus productos."><span class="category-icon">🏪</span><strong>Tiendas y Panaderías</strong><small>Explora comercios y solicita vincular el tuyo.</small><button type="button" class="text-button" data-open-request="tiendas">Ver opciones →</button></article>
+        <article class="category-card" tabindex="0" data-help="Ofrece o busca servicios presenciales y virtuales: fontanería, carpintería, eventos, catering, internet, asistencia virtual, orientación en salud a distancia y más."><span class="category-icon">🛠️</span><strong>Servicios</strong><small>Ofrece o busca servicios presenciales y virtuales.</small><button type="button" class="text-button" data-open-request="servicios">Iniciar solicitud →</button></article>
+        <article class="category-card" tabindex="0" data-help="Busca o publica inmuebles para venta o arriendo e indica la ciudad y el tipo de inmueble."><span class="category-icon">🏠</span><strong>Inmuebles</strong><small>Busca o publica para venta y arriendo.</small><button type="button" class="text-button" data-open-request="inmuebles">Ver opciones →</button></article>
+        <article class="category-card" tabindex="0" data-help="Encuentra oportunidades de trabajo o registra una necesidad para conectar con personas trabajadoras."><span class="category-icon">💼</span><strong>Empleo</strong><small>Busca trabajo o encuentra trabajadores.</small><button type="button" class="text-button" data-open-request="empleo_menu">Ver opciones →</button></article>
+        <article class="category-card" tabindex="0" data-help="Da visibilidad a tu emprendimiento o empresa y conecta con clientes, proveedores y oportunidades comerciales."><span class="category-icon">🚀</span><strong>Emprendedor / empresa</strong><small>Busca clientes o registra tu oferta empresarial.</small><button type="button" class="text-button" data-open-request="empresa">Ver opciones →</button></article>
+        <article class="category-card" tabindex="0" data-help="Cuéntanos qué necesitas si no encuentras una categoría adecuada y te orientaremos sobre el siguiente paso."><span class="category-icon">💡</span><strong>Otra necesidad / asesor</strong><small>Cuéntanos qué necesitas y lo registramos.</small><button type="button" class="text-button" data-open-request="otra">Iniciar solicitud →</button></article>
       </div>
       <div class="account-invite">
         <div class="invite-symbol">✦</div>
@@ -144,6 +156,7 @@
       <p class="section-intro">Busca por municipio o ciudad de Colombia. El listado oficial DIVIPOLA identifica cada municipio junto con su departamento.</p>
       <div class="restaurant-search"><label class="sr-only" for="catalog-city">Municipio o ciudad</label><input id="catalog-city" placeholder="Busca un municipio o ciudad" autocomplete="address-level2"><label class="sr-only" for="catalog-zone">Barrio o sector</label><input id="catalog-zone" placeholder="Barrio o sector (opcional)"><label for="catalog-type">Tipo de restaurante<select id="catalog-type" disabled><option value="">Cargando tipos de restaurante…</option></select></label><button id="catalog-search" class="button primary">Buscar restaurantes</button></div>
       <p id="location-status" class="location-status" aria-live="polite">Cargando el listado de municipios colombianos…</p>
+      <p id="zone-status" class="location-status" role="status" hidden></p>
       <div class="restaurant-registration-hint"><span>¿Tu municipio, corregimiento o centro poblado no aparece?</span><button type="button" class="text-button" id="location-request">Pedir que lo agreguemos →</button></div>
       <div id="catalog-results" class="restaurant-grid"></div>
       <p class="status-note restaurant-disclaimer">En esta etapa puedes explorar perfiles y menús publicados. Los pedidos y pagos dentro de CIRCULA todavía requieren integración adicional. El bot permite a cada restaurante administrar categorías, productos, fotos, precios y descripciones; usa el asistente para iniciar la vinculación.</p>
@@ -200,9 +213,9 @@
     </section>
   </main>
   <dialog id="payment-dialog" class="payment-dialog"><button type="button" id="payment-dialog-close" class="dialog-close" aria-label="Cerrar">×</button><span class="eyebrow">PAGO OFICIAL CIRCULA</span><h2 id="payment-dialog-title">Pagar plan</h2><p id="payment-dialog-copy"></p><a id="payment-dialog-go" class="button primary" href="https://t.me/CIRCULAMarketbot" target="_blank" rel="noopener noreferrer">Abrir el bot oficial →</a><p class="payment-note">El bot te entrega el QR vigente de Nequi o Daviplata y recibe el comprobante para revisión.</p></dialog>
-  <footer><a class="brand footer-brand" href="#inicio" data-page="inicio"><img src="assets/circula_logo.jpg" alt="" width="34" height="34"><span>CIRCULA <small>MARKET</small></span></a><span>Conectamos oportunidades para que todo circule.</span><button class="text-button" data-page="nosotros" data-scroll-target="asistente">¿Necesitas ayuda? →</button></footer>
+      <footer><a class="brand footer-brand" href="#inicio" data-page="inicio"><img src="assets/circula_logo.jpg" alt="" width="34" height="34"><span>CIRCULA <small>MARKET</small></span></a><span>Conectamos oportunidades para que todo circule.</span><button class="text-button" data-page="nosotros" data-scroll-target="asistente">¿Necesitas ayuda? →</button><a class="text-button" href="crm.html">Acceso del equipo →</a></footer>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <datalist id="colombia-municipalities"></datalist>
-  <script src="config.js"></script><script src="municipalities.js"></script><script src="autocomplete.js"></script><script src="app.js"></script><script src="homepage.js"></script><script src="locations.js"></script>
+  <script src="config.js"></script><script src="municipalities.js"></script><script src="app.js"></script><script src="homepage.js"></script><script src="locations.js"></script>
 </body>
 </html>

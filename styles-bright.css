@@ -113,6 +113,39 @@
   border-radius: 12px;
   background: white;
 }
+.restaurant-search {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  align-items: end;
+  max-width: none;
+  gap: 12px;
+}
+.restaurant-search input,
+.restaurant-search select {
+  width: 100%;
+  min-width: 0;
+  min-height: 50px;
+  padding: 12px 15px;
+  border: 1px solid #cadbd4;
+  border-radius: 12px;
+  background: white;
+  color: var(--ink);
+  font: inherit;
+}
+.restaurant-search label:not(.sr-only) {
+  display: grid;
+  gap: 6px;
+  color: var(--deep);
+  font-size: 13px;
+  font-weight: 700;
+}
+.restaurant-search .button { min-height: 50px; }
+@media (max-width: 900px) {
+  .restaurant-search { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 540px) {
+  .restaurant-search { grid-template-columns: minmax(0, 1fr); }
+}
 .store-plans {
   margin-top: 30px;
   padding: 22px;

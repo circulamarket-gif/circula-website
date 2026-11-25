@@ -3,11 +3,12 @@
   const config = window.CIRCULA_CONFIG || {};
   const apiBase = String(config.apiBaseUrl || '').replace(/\/$/, '');
   const $ = (s) => document.querySelector(s);
-  const state = { vip: [], items: [], vipIndex: 0, itemIndex: 0, vipTimer: null, itemTimer: null };
+  const vitrineTypes = new Set(['Producto', 'Trueque', 'Servicio', 'Inmueble', 'Empleo', 'Emprendimiento']);
+  const state = { vip: [], items: [], vipIndex: 0, itemIndex: 0, view: 'grid', vipTimer: null, itemTimer: null };
   const demo = [
     { id:'demo-premium-bici', title:'Bicicleta de montaña · ejemplo', type:'Producto', category:'Movilidad', city:'Bogotá', description:'Publicación de muestra para ilustrar la vitrina VIP.', price:'$600.000 COP', plan:'Premium', subscription_active:true, vip_eligible:true, image_emoji:'🚲', demo:true },
-    { id:'demo-medio-servicio', title:'Asesoría virtual · ejemplo', type:'Servicio', category:'Asistencia virtual', city:'Medellín', description:'Ejemplo de un servicio intangible publicado en CIRCULA.', price:'Consultar', plan:'Medio', subscription_active:true, vip_eligible:true, image_emoji:'🩺', demo:true },
-    { id:'demo-inicial-inmueble', title:'Apartamento · ejemplo', type:'Inmueble', category:'Arriendo', city:'Cali', description:'Ejemplo de inmueble. No es una oferta disponible.', price:'Consultar', plan:'Inicial', subscription_active:true, vip_eligible:true, image_emoji:'🏠', demo:true },
+    { id:'demo-medio-servicio', title:'Asesoría virtual · ejemplo', type:'Servicio', category:'Asistencia virtual', city:'Medellín', description:'Ejemplo de un servicio intangible publicado en CIRCULA.', price:'Consultar', plan:'Medio', subscription_active:true, vip_eligible:false, image_emoji:'🩺', demo:true },
+    { id:'demo-inicial-inmueble', title:'Apartamento · ejemplo', type:'Inmueble', category:'Arriendo', city:'Cali', description:'Ejemplo de inmueble. No es una oferta disponible.', price:'Consultar', plan:'Inicial', subscription_active:true, vip_eligible:false, image_emoji:'🏠', demo:true },
     { id:'demo-producto', title:'Silla de escritorio · ejemplo', type:'Producto', category:'Hogar', city:'Bogotá', description:'Producto de muestra; no está publicado para venta.', price:'$180.000 COP', plan:'Gratis', image_emoji:'🪑', demo:true },
     { id:'demo-servicio', title:'Clases de inglés · ejemplo', type:'Servicio', category:'Educación', city:'Barranquilla', description:'Servicio de muestra para ver cómo rota el catálogo.', price:'Consultar', plan:'Gratis', image_emoji:'📚', demo:true },
     { id:'demo-inmueble', title:'Casa familiar · ejemplo', type:'Inmueble', category:'Venta', city:'Bucaramanga', description:'Inmueble de muestra; no es una publicación real.', price:'Consultar', plan:'Gratis', image_emoji:'🏡', demo:true }
@@ -30,7 +31,7 @@
   function normalized(item) {
     const plan = safeText(item.plan || item.plan_name || item.plan_usuario, 'Gratis');
     const active = item.subscription_active === true || item.suscripcion_activa === true || ['activo','active','vigente'].includes(String(item.subscription_status || item.estado_suscripcion || '').toLowerCase());
-    const eligible = item.vip_eligible === true || item.prioridad_vip === true || (active && (planPriority[plan] || 0) > 0);
+    const eligible = item.vip_eligible === true || item.prioridad_vip === true || (active && plan === 'Premium');
     return {
       id: item.id ?? item.producto_id ?? item.codigo ?? '', title: safeText(item.title || item.titulo || item.producto || item.nombre, 'Publicación CIRCULA'),
       type: safeText(item.type || item.tipo || item.category_type, 'Producto'), category: safeText(item.category || item.categoria?.nombre || item.categoria || item.tipo_negocio, ''),
@@ -71,7 +72,6 @@
     const line=[item.type,item.category,item.city].filter(Boolean).join(' · '); if(line)copy.append(safeTextNode('p','vip-meta',line));
     if(item.description)copy.append(safeTextNode('p','vip-description',item.description));
     copy.append(safeTextNode('strong','vip-price',item.price));
-    if(item.type==='Producto'&&!item.demo){copy.append(safeTextNode('p','vip-meta',`Pedido mínimo: $${item.minimumOrder.toLocaleString('es-CO')} COP · ${item.delivery}`));copy.append(safeTextNode('p','vip-meta',item.rating!=null&&item.ratingCount?`⭐ ${item.rating} · ${item.ratingCount} calificaciones`:'Aún sin calificaciones'));copy.append(safeTextNode('small','vip-description','El pago se hace directamente a la tienda; CIRCULA no cobra comisión por la venta.'));}
     const contact=document.createElement('button');contact.type='button';contact.className='button primary market-contact';contact.dataset.itemTitle=item.title;contact.disabled=item.demo;contact.textContent=item.demo?'Ejemplo de prioridad':'Consultar en CIRCULA';copy.append(contact);
     root.append(copy);count.textContent=`${state.vipIndex%state.vip.length+1} / ${state.vip.length}`;
   }
@@ -80,38 +80,37 @@
     card.append(art(item,'market-art'));
     const body=document.createElement('div');body.className='market-card-body';
     const tag=item.demo?'EJEMPLO':item.type.toUpperCase();body.append(safeTextNode('span','market-type',tag));
-    if(item.vip && !item.demo)body.append(safeTextNode('span','market-plan-badge',item.plan==='Premium'?'VIP PREMIUM':`DESTACADO ${item.plan.toUpperCase()}`));
+    if(!item.demo && item.plan!=='Gratis')body.append(safeTextNode('span','market-plan-badge',item.plan==='Premium'?'VIP PREMIUM':`PLAN ${item.plan.toUpperCase()}`));
     body.append(safeTextNode('h4','',item.title));
     const meta=[item.category,item.city].filter(Boolean).join(' · ');if(meta)body.append(safeTextNode('p','market-meta',meta));
     body.append(safeTextNode('strong','market-price',item.price));
-    if(item.type==='Producto'&&!item.demo){body.append(safeTextNode('p','market-meta',`Pedido mínimo: $${item.minimumOrder.toLocaleString('es-CO')} COP · ${item.delivery}`));body.append(safeTextNode('p','market-meta',item.rating!=null&&item.ratingCount?`⭐ ${item.rating} · ${item.ratingCount} calificaciones`:'Aún sin calificaciones'));body.append(safeTextNode('small','demo-copy','El pago se hace directamente a la tienda; CIRCULA no cobra comisión por la venta.'));}
     if(item.demo)body.append(safeTextNode('small','demo-copy','Ejemplo demostrativo · no disponible'));
     else {const button=document.createElement('button');button.type='button';button.className='market-contact';button.dataset.itemTitle=item.title;if(item.chatAction)button.dataset.chatAction=item.chatAction;button.textContent='Consultar →';body.append(button);}
     card.append(body);return card;
   }
   function renderMarket() {
-    const grid=$('#market-grid'), count=$('#market-count');grid.replaceChildren();
+    const grid=$('#market-grid'), count=$('#market-count');grid.replaceChildren();grid.classList.toggle('is-list',state.view==='list');
+    $('#market-view-grid').setAttribute('aria-pressed',String(state.view==='grid'));
+    $('#market-view-list').setAttribute('aria-pressed',String(state.view==='list'));
     if(!state.items.length){$('#market-status').textContent='Aún no hay publicaciones para mostrar.';count.textContent='0 / 0';return;}
-    const visible=Math.min(3,state.items.length);
+    const visible=Math.min(12,state.items.length);
     for(let n=0;n<visible;n++)grid.append(itemCard(state.items[(state.itemIndex+n)%state.items.length]));
     count.textContent=`${state.itemIndex%state.items.length+1} / ${state.items.length}`;
     $('#market-status').textContent=state.items.some(i=>i.demo)?'Ejemplos demostrativos · se reemplazarán al conectar las publicaciones aprobadas.':'Las publicaciones visibles son anuncios activos aprobados por CIRCULA.';
   }
   async function loadHomeItems() {
     if(!apiBase){
-      if(config.demoMode){state.vip=demo.filter(i=>i.vip).map(normalized).sort(tier);state.items=demo.map(normalized);$('#demo-note').hidden=false;}
+      if(config.demoMode){state.vip=demo.filter(i=>i.vip&&vitrineTypes.has(i.type)).map(normalized).sort(tier);state.items=demo.filter(i=>!i.vip&&vitrineTypes.has(i.type)).map(normalized).sort(tier);$('#demo-note').hidden=false;}
       else {state.vip=[];state.items=[];$('#market-status').textContent='Conecta el servidor de CIRCULA para ver publicaciones.';}
       renderVip();renderMarket();return;
     }
-    $('#market-status').textContent='Cargando productos de tiendas y restaurantes aprobados…';
+    $('#market-status').textContent='Cargando publicaciones aprobadas de Compra y venta, Trueques, Inmuebles, Servicios, Empleo y Emprendimientos…';
     try {
-      const [storeResult,restaurantResult]=await Promise.all([request('/tiendas'),request('/restaurantes')]);
-      const stores=(storeResult.items||[]).map(item=>normalized({...item,type:'Producto',category:item.tipo_negocio||'Tienda',public_image_url:`${apiBase}/tiendas/productos/${encodeURIComponent(item.producto_id)}/foto`,image_emoji:'🛒',chat_action:item.chat_action||item.accion_chat||''}));
-      const restaurants=(restaurantResult.items||[]).map(item=>normalized({...item,type:'Restaurante',public_image_url:item.logo_url,image_emoji:'🍽️'}));
-      const all=[...stores,...restaurants];
-      state.vip=all.filter(item=>item.vip).sort(tier);state.items=all;
+      const listingResult=await request('/publicaciones?limite=200');
+      const all=(listingResult.items||[]).filter(item=>vitrineTypes.has(item.type)).map(item=>normalized({...item,public_image_url:Number(item.image_count)>0?`${apiBase}/publicaciones/${encodeURIComponent(item.id)}/imagen/1`:'',image_emoji:({Producto:'🛍️',Inmueble:'🏠',Servicio:'🛠️',Trueque:'🔄',Empleo:'💼',Emprendimiento:'🚀'}[item.type]||'🛍️')}));
+      state.vip=all.filter(item=>item.vip).sort(tier);state.items=all.filter(item=>!item.vip).sort(tier);
       $('#demo-note').hidden=true;renderVip();renderMarket();startRotation();
-      $('#market-status').textContent=all.length?'Por ahora la vitrina usa tiendas y restaurantes aprobados. Los anuncios generales de productos, inmuebles y servicios necesitan sus rutas de catálogo.':'Aún no hay productos de tiendas ni restaurantes publicados.';
+      $('#market-status').textContent=all.length?`${state.items.length} publicaciones aprobadas de las categorías habilitadas. Las destacadas aparecen arriba en Vitrina VIP.`:'Aún no hay publicaciones aprobadas de estas categorías para mostrar.';
     } catch(error){state.vip=[];state.items=[];renderVip();renderMarket();$('#market-status').textContent=`No pudimos cargar la vitrina: ${error.message}`;}
   }
   function startRotation(){clearInterval(state.vipTimer);clearInterval(state.itemTimer);if(state.vip.length>1)state.vipTimer=setInterval(()=>{state.vipIndex=(state.vipIndex+1)%state.vip.length;renderVip();},8500);if(state.items.length>1)state.itemTimer=setInterval(()=>{state.itemIndex=(state.itemIndex+1)%state.items.length;renderMarket();},7000);}
@@ -119,6 +118,8 @@
   $('#vip-next').addEventListener('click',()=>{if(!state.vip.length)return;state.vipIndex=(state.vipIndex+1)%state.vip.length;renderVip();});
   $('#market-prev').addEventListener('click',()=>{if(!state.items.length)return;state.itemIndex=(state.itemIndex-1+state.items.length)%state.items.length;renderMarket();});
   $('#market-next').addEventListener('click',()=>{if(!state.items.length)return;state.itemIndex=(state.itemIndex+1)%state.items.length;renderMarket();});
+  $('#market-view-grid').addEventListener('click',()=>{state.view='grid';renderMarket();});
+  $('#market-view-list').addEventListener('click',()=>{state.view='list';renderMarket();});
   document.addEventListener('click',event=>{
     const contact=event.target.closest('.market-contact');if(contact&&!contact.disabled){
       if(contact.dataset.chatAction){window.dispatchEvent(new CustomEvent('circula:chat-action',{detail:{action:contact.dataset.chatAction,label:`Consultar por ${contact.dataset.itemTitle||'este producto'}`}}));return;}
