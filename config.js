@@ -6,8 +6,8 @@ window.CIRCULA_CONFIG = {
   chatApiBaseUrl: 'https://api.circulamarket.com/api/v1',
   storageMode: 'server-managed',
   demoMode: false,
-  appDownloadUrl: '',
-  appReleaseVersion: ''
+  appDownloadUrl: 'https://drive.google.com/uc?export=download&id=1bXHLwFuPX_-JRJJlzNEQgWO4dutZ-NLg',
+  appReleaseVersion: '0.1.2'
 };
 
 // Nota: apiBaseUrl y chatApiBaseUrl deben apuntar al MISMO servidor del bot.
