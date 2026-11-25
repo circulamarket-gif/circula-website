@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#e8faf4">
+  <title>CRM interno · CIRCULA Market</title>
+  <link rel="stylesheet" href="crm.css">
+</head>
+<body>
+  <main class="shell">
+    <section id="login-card" class="login-card">
+      <a class="brand" href="index.html" aria-label="Volver a CIRCULA">
+        <span class="brand-mark">C</span><span><strong>CIRCULA</strong><small>CRM INTERNO</small></span>
+      </a>
+      <p class="eyebrow">EQUIPO CIRCULA</p>
+      <h1>Entra a tu espacio de trabajo</h1>
+      <p class="muted">Usa el correo y la contraseña de tu cuenta interna. Este acceso es distinto al de clientes.</p>
+      <form id="login-form" class="stack">
+        <label>Correo<input name="email" type="email" autocomplete="username" required></label>
+        <label>Contraseña<input name="contrasena" type="password" autocomplete="current-password" required></label>
+        <button class="button primary">Entrar al CRM</button>
+      </form>
+      <p id="login-message" class="notice" role="status"></p>
+      <a class="back-link" href="index.html">← Volver a la página de CIRCULA</a>
+    </section>
+
+    <section id="crm-app" hidden>
+      <header class="topbar">
+        <a class="brand" href="index.html"><span class="brand-mark">C</span><span><strong>CIRCULA</strong><small>CRM INTERNO</small></span></a>
+        <div class="user-controls">
+          <div class="identity"><strong id="staff-name"></strong><small id="staff-role"></small></div>
+          <label class="status-label">Mi estado
+            <select id="staff-status">
+              <option value="disponible">Disponible</option><option value="descanso">Descanso</option>
+              <option value="bano">Baño</option><option value="capacitacion">Capacitación</option><option value="offline">Desconectado</option>
+            </select>
+          </label>
+          <button id="logout" class="button subtle">Salir</button>
+        </div>
+      </header>
+      <nav id="tabs" class="tabs" aria-label="Secciones internas">
+        <button data-tab="inicio" class="selected">Resumen</button>
+        <button data-tab="casos">Conversaciones</button>
+        <button data-tab="moderacion" data-permission="moderar_publicaciones">Publicaciones por aprobar</button>
+        <button data-tab="equipo" data-permission="supervisar_brokers">Equipo</button>
+        <button data-tab="usuarios" data-permission="gestionar_usuarios">Crear usuarios</button>
+        <button data-tab="buzon" data-permission="ver_buzon">Buzón de usuarios</button>
+        <button data-tab="permisos" data-role="superadministrador">Permisos</button>
+      </nav>
+      <p id="global-message" class="notice" role="status"></p>
+      <section id="tab-inicio" class="tab-panel">
+        <div class="welcome"><p class="eyebrow">OPERACIÓN EN VIVO</p><h1>Hola, <span id="welcome-name"></span></h1><p class="muted">El panel se actualiza automáticamente cada pocos segundos.</p></div>
+        <div class="stats"><article><small>Casos activos</small><strong id="active-count">—</strong></article><article><small>Sin asignar</small><strong id="unassigned-count">—</strong></article><article><small>Personas del equipo</small><strong id="team-count">—</strong></article></div>
+        <div class="panel"><div class="panel-heading"><div><p class="eyebrow">ATENCIÓN</p><h2>Casos recientes</h2></div><button class="button subtle" data-open-tab="casos">Ver conversaciones</button></div><div id="recent-cases" class="case-list"></div></div>
+      </section>
+      <section id="tab-casos" class="tab-panel" hidden>
+        <div class="page-heading"><div><p class="eyebrow">ATENCIÓN AL CLIENTE</p><h1>Conversaciones</h1><p class="muted">Brokers atienden al comprador y al vendedor desde el mismo caso.</p></div><select id="case-filter"><option value="activos">Activos</option><option value="Abierto">Abiertos</option><option value="Asignado">Asignados</option><option value="Cerrado">Cerrados</option></select></div>
+        <div class="workspace"><div id="case-list" class="case-list panel"></div><article id="case-detail" class="panel detail"><p class="empty">Elige un caso para ver la conversación.</p></article></div>
+      </section>
+      <section id="tab-moderacion" class="tab-panel" hidden>
+        <div class="page-heading"><div><p class="eyebrow">PUBLICACIONES</p><h1>Revisión antes de vitrina</h1><p class="muted">Solo al aprobarse, el anuncio aparece en web y app. Se muestran ofertas de las categorías habilitadas, no solicitudes de búsqueda.</p></div><button id="refresh-listings" class="button subtle">Actualizar</button></div>
+        <div class="workspace"><div id="listing-review-list" class="case-list panel"></div><article id="listing-review-detail" class="panel detail"><p class="empty">Elige una publicación para revisarla.</p></article></div>
+      </section>
+      <section id="tab-equipo" class="tab-panel" hidden>
+        <div class="page-heading"><div><p class="eyebrow">COORDINACIÓN</p><h1>Equipo</h1><p class="muted">Disponibilidad del personal y brokers.</p></div><button id="refresh-team" class="button subtle">Actualizar</button></div>
+        <div class="panel table-wrap"><table><thead><tr><th>Nombre</th><th>Rol</th><th>Estado</th><th>Última actualización</th></tr></thead><tbody id="team-rows"></tbody></table></div>
+      </section>
+      <section id="tab-usuarios" class="tab-panel" hidden>
+        <div class="page-heading"><div><p class="eyebrow">ACCESOS</p><h1>Crear usuario interno</h1><p class="muted">La contraseña se guarda protegida. El servidor decide los permisos de cada cuenta.</p></div></div>
+        <form id="create-user-form" class="panel form-grid">
+          <label>Nombre completo<input name="nombre" required maxlength="120"></label>
+          <label>Correo de acceso<input name="email" type="email" required maxlength="200"></label>
+          <label>Rol<select name="rol" required><option value="broker">Broker</option><option value="coordinador">Coordinador</option><option value="administrador">Administrador</option><option value="manager_general">Manager general</option></select></label>
+          <label>Contraseña inicial<input name="contrasena" type="password" minlength="12" required autocomplete="new-password"><small>Mínimo 12 caracteres; entrégala al usuario por un medio privado.</small></label>
+          <label>Telegram ID <small>Opcional para enlazar el canal del bot.</small><input name="telegram_id" inputmode="numeric"></label>
+          <label>WhatsApp del personal <small>Opcional, solo dígitos y código de país.</small><input name="whatsapp" inputmode="tel"></label>
+          <div class="form-actions"><button class="button primary">Crear acceso</button><span id="create-user-message" class="muted"></span></div>
+        </form>
+        <div class="panel"><h2>Usuarios CRM</h2><div id="user-list" class="case-list"></div></div>
+      </section>
+      <section id="tab-buzon" class="tab-panel" hidden>
+        <div class="page-heading"><div><p class="eyebrow">COMUNICACIÓN INTERNA</p><h1>Buzón de usuarios</h1><p class="muted">Responde consultas dirigidas al equipo coordinador.</p></div><button id="refresh-inbox" class="button subtle">Actualizar</button></div>
+        <div class="workspace"><div id="inbox-list" class="case-list panel"></div><article id="inbox-detail" class="panel detail"><p class="empty">Elige una conversación.</p></article></div>
+      </section>
+      <section id="tab-permisos" class="tab-panel" hidden>
+        <div class="page-heading"><div><p class="eyebrow">CONTROL DEL SUPERADMINISTRADOR</p><h1>Permisos por rol</h1><p class="muted">El superadministrador siempre conserva acceso total. Los cambios se guardan en el servidor.</p></div></div>
+        <form id="permission-form" class="panel form-grid"><label>Rol<select name="rol" id="permission-role"></select></label><label>Permiso<select name="permiso" id="permission-name"></select></label><label>Acceso<select name="permitido"><option value="true">Permitir</option><option value="false">Denegar</option></select></label><div class="form-actions"><button class="button primary">Guardar permiso</button><span id="permission-message" class="muted"></span></div></form>
+        <div id="permission-matrix" class="panel"></div>
+      </section>
+    </section>
+  </main>
+  <script src="config.js"></script><script src="crm.js"></script>
+</body>
+</html>
