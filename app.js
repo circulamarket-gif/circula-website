@@ -425,6 +425,10 @@
       if(!fd.get('confirma_mayoria_edad')||!fd.get('acepta_terminos')||!fd.get('autoriza_datos')){ $('#account-result').textContent='Confirma tu mayoría de edad, acepta los términos y autoriza el tratamiento de datos.';return;}
       requestBody=new FormData();
       for(const field of signupFields)requestBody.set(field,fd.get(field));
+      const invited=String(fd.get('invitado_embajador')||'no')==='si';
+      const ambassadorRef=String(fd.get('ref')||'').trim().toUpperCase();
+      if(invited&&!/^EMB-[A-Z0-9]{6}$/.test(ambassadorRef)){ $('#account-result').textContent='Escribe el código de tu Embajador (por ejemplo EMB-AB12CD) o elige NO para continuar.';return;}
+      if(invited)requestBody.set('ref',ambassadorRef);
       requestBody.set('codigo_municipio',selectedMunicipality.codigo);
       requestBody.set('confirma_mayoria_edad','true');
       requestBody.set('acepta_terminos','true');
@@ -433,10 +437,11 @@
     }
     $('#account-result').textContent='Enviando al servidor seguro de CIRCULA…';
     try{const result=await api(endpoint,{method:'POST',body:requestBody});const code=result.codigo||result.code;$('#account-result').textContent=(result.message||successText)+(code?` Tu código CIRCULA es ${code}.`:'');form.reset();}
-    catch(error){$('#account-result').textContent=error.message;}
+    catch(error){$('#account-result').textContent=error.message==='codigo_embajador_invalido'?'El código de Embajador no es válido. Corrígelo o elige NO para continuar.':error.message;}
   }
   $('#signup-form').addEventListener('submit',e=>{e.preventDefault();submitRegistration(e.currentTarget,'/app/signup','Tu registro quedó pendiente de revisión.');});
   $('#link-form').addEventListener('submit',e=>{e.preventDefault();submitRegistration(e.currentTarget,'/app/register','La solicitud de vinculación quedó pendiente de revisión.');});
+  $$('#signup-form [name="invitado_embajador"]').forEach(r=>r.addEventListener('change',()=>{const si=$('#signup-form [name="invitado_embajador"][value="si"]').checked;$('#ambassador-code-row').hidden=!si;}));
   $$('[data-auth-tab]').forEach(button=>button.addEventListener('click',()=>selectAuthTab(button.dataset.authTab)));
   $$('[data-view]').forEach(button=>button.addEventListener('click',()=>{showView(button.dataset.view);if(button.dataset.authMode)selectAuthTab(button.dataset.authMode);}));
   function updateSubscriptionMenuButton(){const navBtn=$('#mi-suscripcion-nav');if(authToken()){navBtn.hidden=false;}else{navBtn.hidden=true;}}

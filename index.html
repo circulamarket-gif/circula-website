@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="styles-bright.css">
   <link rel="stylesheet" href="homepage.css">
   <link rel="stylesheet" href="share.css">
+  <link rel="stylesheet" href="password-eye.css">
 </head>
 <body>
   <header class="topbar">
@@ -191,6 +192,11 @@
           <label>Fecha de nacimiento<input name="fecha_nacimiento" type="date" autocomplete="bday" required><small>Debe coincidir con la fecha que aparece en tu documento.</small></label>
           <label>Contraseña<input name="contrasena" type="password" minlength="12" autocomplete="new-password" required><small>Mínimo 12 caracteres.</small></label>
           <label>Repite la contraseña<input name="confirmacion" type="password" minlength="12" autocomplete="new-password" required></label>
+          <fieldset class="ambassador-box"><legend>Si te está invitando un Embajador de CIRCULA:</legend>
+            <label class="check-row"><input type="radio" name="invitado_embajador" value="si"><span>SÍ, pon aquí el código que te suministró</span></label>
+            <label class="check-row"><input type="radio" name="invitado_embajador" value="no" checked><span>NO, continuar con el registro</span></label>
+            <label id="ambassador-code-row" hidden>Código del Embajador<input name="ref" maxlength="12" autocomplete="off" placeholder="EMB-AB12CD" style="text-transform:uppercase"></label>
+          </fieldset>
           <label class="check-row"><input name="confirma_mayoria_edad" type="checkbox" required><span>Confirmo que soy mayor de 18 años.</span></label>
           <details class="terms-summary"><summary>Leer los términos vigentes de CIRCULA</summary><p id="signup-terms-text">Al abrir esta opción, se consultará la versión oficial del servidor de CIRCULA.</p></details>
           <label class="check-row"><input name="acepta_terminos" type="checkbox" required><span>Acepto los términos de CIRCULA.</span></label>
@@ -213,9 +219,9 @@
     </section>
   </main>
   <dialog id="payment-dialog" class="payment-dialog"><button type="button" id="payment-dialog-close" class="dialog-close" aria-label="Cerrar">×</button><span class="eyebrow">PAGO OFICIAL CIRCULA</span><h2 id="payment-dialog-title">Pagar plan</h2><p id="payment-dialog-copy"></p><a id="payment-dialog-go" class="button primary" href="https://t.me/CIRCULAMarketbot" target="_blank" rel="noopener noreferrer">Abrir el bot oficial →</a><p class="payment-note">El bot te entrega el QR vigente de Nequi o Daviplata y recibe el comprobante para revisión.</p></dialog>
-      <footer><a class="brand footer-brand" href="#inicio" data-page="inicio"><img src="assets/circula_logo.jpg" alt="" width="34" height="34"><span>CIRCULA <small>MARKET</small></span></a><span>Conectamos oportunidades para que todo circule.</span><button class="text-button" data-page="nosotros" data-scroll-target="asistente">¿Necesitas ayuda? →</button><a class="text-button" href="crm.html">Acceso del equipo →</a></footer>
+      <footer><a class="brand footer-brand" href="#inicio" data-page="inicio"><img src="assets/circula_logo.jpg" alt="" width="34" height="34"><span>CIRCULA <small>MARKET</small></span></a><span>Conectamos oportunidades para que todo circule.</span><button class="text-button" data-page="nosotros" data-scroll-target="asistente">¿Necesitas ayuda? →</button></footer>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <datalist id="colombia-municipalities"></datalist>
-  <script src="config.js"></script><script src="municipalities.js"></script><script src="app.js"></script><script src="homepage.js"></script><script src="locations.js"></script>
+  <script src="password-eye.js" defer></script><script src="config.js"></script><script src="municipalities.js"></script><script src="app.js"></script><script src="homepage.js"></script><script src="locations.js"></script>
 </body>
 </html>
