@@ -1,0 +1,48 @@
+# Agente de Mantenimiento
+logs/
+reports/
+.sync-state.json
+
+# Node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporal
+*.tmp
+*.temp
+.cache/
+
+# Secrets
+.secrets
+secrets.json
+*.key
+
+# Cloudflare
+.wrangler/
+.cloudflare/
+
+# Build outputs
+dist/
+build/
+out/
+
+# PM2
+logs/pm2.log

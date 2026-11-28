@@ -7,7 +7,6 @@
   <title>CRM interno · CIRCULA Market</title>
   <link rel="stylesheet" href="crm.css">
   <link rel="stylesheet" href="password-eye.css">
-  <script src="password-eye.js" defer></script>
 </head>
 <body>
   <main class="shell">
@@ -46,7 +45,9 @@
         <button data-tab="casos">Conversaciones</button>
         <button data-tab="moderacion" data-permission="moderar_publicaciones">Publicaciones por aprobar</button>
         <button data-tab="equipo" data-permission="supervisar_brokers">Equipo</button>
-        <button data-tab="usuarios" data-permission="gestionar_usuarios">Crear usuarios</button>
+        <button data-tab="usuarios" data-permission="gestionar_usuarios">Usuarios y permisos</button>
+        <button data-tab="embajadores" data-permission="gestionar_embajadores">Embajadores</button>
+        <button data-tab="salas" data-any="ver_casos_todos,ver_casos_propios">Salas y coincidencias</button>
         <button data-tab="buzon" data-permission="ver_buzon">Buzón de usuarios</button>
         <button data-tab="permisos" data-role="superadministrador">Permisos</button>
       </nav>
@@ -73,13 +74,40 @@
         <form id="create-user-form" class="panel form-grid">
           <label>Nombre completo<input name="nombre" required maxlength="120"></label>
           <label>Correo de acceso<input name="email" type="email" required maxlength="200"></label>
-          <label>Rol<select name="rol" required><option value="broker">Broker</option><option value="coordinador">Coordinador</option><option value="administrador">Administrador</option><option value="manager_general">Manager general</option></select></label>
+          <label>Rol<select name="rol" required><option value="broker">Broker</option><option value="coordinador">Coordinador</option><option value="administrador">Administrador</option><option value="manager_general">Manager general</option><option value="tecnico_inspector">Técnico inspector</option><option value="logistica">Logística</option></select></label>
           <label>Contraseña inicial<input name="contrasena" type="password" minlength="12" required autocomplete="new-password"><small>Mínimo 12 caracteres; entrégala al usuario por un medio privado.</small></label>
           <label>Telegram ID <small>Opcional para enlazar el canal del bot.</small><input name="telegram_id" inputmode="numeric"></label>
           <label>WhatsApp del personal <small>Opcional, solo dígitos y código de país.</small><input name="whatsapp" inputmode="tel"></label>
           <div class="form-actions"><button class="button primary">Crear acceso</button><span id="create-user-message" class="muted"></span></div>
         </form>
-        <div class="panel"><h2>Usuarios CRM</h2><div id="user-list" class="case-list"></div></div>
+        <div class="panel table-wrap"><h2>Directorio de usuarios</h2><p class="muted">Haz clic en un nombre para ver y ajustar sus permisos.</p><table><thead><tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Estado</th><th></th></tr></thead><tbody id="user-rows"></tbody></table></div>
+        <div id="audit-panel" class="panel" hidden><h2>Auditoría de permisos</h2><div id="audit-list" class="case-list"></div></div>
+      </section>
+      <section id="tab-embajadores" class="tab-panel" hidden>
+        <div class="page-heading"><div><p class="eyebrow">PROGRAMA DE EMBAJADORES</p><h1>Embajadores</h1><p class="muted">Crea Embajadores, revisa si completaron datos y contrato, y liquida cada mes.</p></div><button id="refresh-emb" class="button subtle">Actualizar</button></div>
+        <form id="emb-form" class="panel form-grid"><label>Código CIRCULA del nuevo Embajador<input name="codigo_circula" placeholder="CIRC-000123" required maxlength="20"></label><div class="form-actions"><button class="button primary">Crear Embajador</button><span id="emb-message" class="muted"></span></div></form>
+        <div class="panel table-wrap"><h2>Embajadores</h2><table><thead><tr><th>Código</th><th>Nombre</th><th>Estado</th><th>Contrato</th><th>Falta</th><th>Vinculados</th><th>Ventas del mes</th><th></th></tr></thead><tbody id="emb-rows"></tbody></table></div>
+        <div class="panel"><h2>Liquidación mensual</h2><div class="inline"><input id="liq-periodo" placeholder="2026-11" maxlength="7"><button id="liq-ver" class="button subtle" type="button">Ver liquidación</button><button id="liq-cerrar" class="button primary" type="button" hidden>Cerrar mes (superadmin)</button></div><p id="liq-message" class="muted"></p><div id="liq-result" class="table-wrap"></div></div>
+        <div id="emb-config-panel" class="panel" hidden><h2>Reglas del programa (superadmin)</h2><div id="emb-config"></div></div>
+      </section>
+      <section id="tab-salas" class="tab-panel" hidden>
+        <div class="page-heading"><div><p class="eyebrow">NEGOCIACIÓN GUIADA</p><h1>Salas y coincidencias</h1><p class="muted">Cada sala tiene dos conversaciones separadas: el comprador y el vendedor solo hablan con el asesor, nunca entre sí.</p></div><button id="refresh-salas" class="button subtle">Actualizar</button></div>
+        <div id="salas-resumen" class="stats"></div>
+        <nav class="tabs sub" id="salas-subtabs"><button data-sub="salas" class="selected">Salas</button><button data-sub="coinc">Coincidencias</button><button data-sub="bv">Asesor virtual</button></nav>
+        <div id="sub-salas">
+          <div class="inline"><label class="inline"><input type="checkbox" id="salas-cerradas"> Ver también las cerradas</label></div>
+          <div class="workspace"><div id="salas-list" class="case-list panel"></div><article id="sala-detail" class="panel detail"><p class="empty">Elige una sala.</p></article></div>
+        </div>
+        <div id="sub-coinc" hidden>
+          <div class="inline"><select id="coinc-estado"><option value="">Todos los estados</option><option>Nueva</option><option>Notificada</option><option>Respondida</option><option>En_caso</option><option>Descartada</option><option>Cerrada</option></select></div>
+          <div class="panel table-wrap"><table><thead><tr><th>#</th><th>Busca</th><th>Ofrece</th><th>Ciudad</th><th>Puntaje</th><th>Estado</th><th>Creada</th></tr></thead><tbody id="coinc-rows"></tbody></table></div>
+        </div>
+        <div id="sub-bv" hidden>
+          <div class="panel"><h2>Asesor virtual 24 horas</h2><p id="bv-estado" class="muted"></p><p class="muted">Atiende solo cuando no hay ninguna persona conectada, se presenta siempre como asesor virtual, no cierra ni acepta precios y pasa a una persona todo lo delicado. Aprende de las respuestas de los brokers reales: lo aprendido queda <b>pendiente</b> hasta que alguien lo apruebe.</p></div>
+          <div class="inline"><select id="bv-filtro"><option value="pendiente">Pendientes de aprobar</option><option value="aprobada">Aprobadas</option><option value="rechazada">Rechazadas</option><option value="">Todas</option></select></div>
+          <div class="panel table-wrap"><table><thead><tr><th>Categoría</th><th>Cuando la persona dice…</th><th>Respuesta</th><th>Origen</th><th>Usos</th><th>Útil</th><th></th></tr></thead><tbody id="bv-rows"></tbody></table></div>
+          <form id="bv-form" class="panel form-grid" hidden><label>Categoría<input name="categoria" placeholder="precio_objecion" required maxlength="40"></label><label>Cuando la persona dice…<input name="situacion" maxlength="300"></label><label style="grid-column:1/-1">Respuesta<textarea name="texto" required maxlength="700" rows="3"></textarea></label><div class="form-actions"><button class="button primary">Agregar respuesta aprobada</button><span id="bv-msg" class="muted"></span></div></form>
+        </div>
       </section>
       <section id="tab-buzon" class="tab-panel" hidden>
         <div class="page-heading"><div><p class="eyebrow">COMUNICACIÓN INTERNA</p><h1>Buzón de usuarios</h1><p class="muted">Responde consultas dirigidas al equipo coordinador.</p></div><button id="refresh-inbox" class="button subtle">Actualizar</button></div>
@@ -92,6 +120,8 @@
       </section>
     </section>
   </main>
-  <script src="config.js"></script><script src="crm.js"></script>
+  <div id="drawer-bg" class="drawer-bg" hidden></div>
+  <aside id="drawer" class="drawer" hidden aria-label="Permisos del usuario"><div class="drawer-head"><div><h2 id="drawer-name"></h2><small id="drawer-sub"></small></div><button id="drawer-close" class="button subtle" type="button">Cerrar</button></div><p id="drawer-note" class="notice"></p><div id="drawer-body"></div><div class="drawer-foot"><button id="drawer-restore" class="button subtle" type="button">Restaurar permisos por defecto del rol</button></div></aside>
+  <script src="config.js"></script><script src="password-eye.js"></script><script src="crm.js"></script>
 </body>
 </html>
